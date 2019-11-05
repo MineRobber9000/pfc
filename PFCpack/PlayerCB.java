@@ -1,102 +1,94 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
+import java.util.Collection;
 import java.util.ArrayList;
 
-public class PlayerCB
-  extends Player
+public class PlayerCB extends Player
 {
-  public int ratCBCov;
-  public int ratCBSpd;
-  public int ratCBTkl;
-  
-  public PlayerCB(Team paramTeam, String[] paramArrayOfString)
-  {
-    super(paramTeam, paramArrayOfString);
-  }
-  
-  public PlayerCB(String paramString, int paramInt)
-  {
-    super(paramString, "CB", paramInt);
-    position = "CB";
-  }
-  
-  public PlayerCB(String paramString, Team paramTeam)
-  {
-    super(paramString, paramTeam, "CB", true);
-    position = "CB";
-  }
-  
-  public PlayerCB(String paramString1, Team paramTeam, int[] paramArrayOfInt, String paramString2)
-  {
-    super(paramString1, paramTeam, "CB", false);
-    setVariables(paramArrayOfInt, paramString2);
-    position = "CB";
-  }
-  
-  public ArrayList<String> getDetailAllStatsList(int paramInt)
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("Games: " + gamesPlayed + " (" + statsWins + "-" + (gamesPlayed - statsWins) + ")>Durability: " + getLetterGrade(ratDur));
-    localArrayList.add("Football IQ: " + getLetterGrade(ratFootIQ) + ">Coverage: " + getLetterGrade(ratCBCov));
-    localArrayList.add("Speed: " + getLetterGrade(ratCBSpd) + ">Tackling: " + getLetterGrade(ratCBTkl));
-    localArrayList.add("Contract: " + contract.toString());
-    localArrayList.add("[B]CAREER STATS:");
-    localArrayList.addAll(getCareerStatsList());
-    return localArrayList;
-  }
-  
-  public ArrayList<String> getDetailStatsList(int paramInt)
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("Games: " + gamesPlayed + " (" + statsWins + "-" + (gamesPlayed - statsWins) + ")>Durability: " + getLetterGrade(ratDur));
-    localArrayList.add("Football IQ: " + getLetterGrade(ratFootIQ) + ">Coverage: " + getLetterGrade(ratCBCov));
-    localArrayList.add("Speed: " + getLetterGrade(ratCBSpd) + ">Tackling: " + getLetterGrade(ratCBTkl));
-    localArrayList.add("Contract: " + contract.toString());
-    localArrayList.add(" > ");
-    return localArrayList;
-  }
-  
-  public ArrayList<String> getDetailStatsOffseason()
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("Potential: " + getLetterGrade(ratPot) + ">Durability: " + getLetterGrade(ratDur));
-    localArrayList.add("Football IQ: " + getLetterGrade(ratFootIQ) + ">Coverage: " + getLetterGrade(ratCBCov));
-    localArrayList.add("Speed: " + getLetterGrade(ratCBSpd) + ">Tackling: " + getLetterGrade(ratCBTkl));
-    localArrayList.add("Desired Contract: " + Contract.getContractFA(this).toString());
-    localArrayList.add("[B]CAREER STATS:");
-    localArrayList.addAll(getCareerStatsList());
-    return localArrayList;
-  }
-  
-  public String getInfoForLineup()
-  {
-    if (injury != null) {
-      return getInitialName() + " [" + age + "] " + ratOvr + "/" + getLetterGrade(ratPot) + " " + injury.toString();
+    public int ratCBCov;
+    public int ratCBSpd;
+    public int ratCBTkl;
+    
+    public PlayerCB(final Team team, final String[] array) {
+        super(team, array);
     }
-    return getInitialName() + " [" + age + "] " + ratOvr + "/" + getLetterGrade(ratPot) + " (" + getLetterGrade(ratCBCov) + ", " + getLetterGrade(ratCBSpd) + ", " + getLetterGrade(ratCBTkl) + ")";
-  }
-  
-  public int[] getRatings()
-  {
-    return new int[] { ratCBCov, ratCBSpd, ratCBTkl };
-  }
-  
-  public void setOvr()
-  {
-    ratOvr = ((ratCBCov * 2 + ratCBSpd + ratCBTkl) / 4);
-  }
-  
-  public void setRatings(int[] paramArrayOfInt)
-  {
-    ratCBCov = paramArrayOfInt[0];
-    ratCBSpd = paramArrayOfInt[1];
-    ratCBTkl = paramArrayOfInt[2];
-    setOvr();
-  }
+    
+    public PlayerCB(final String s, final int n) {
+        super(s, "CB", n);
+        this.position = "CB";
+    }
+    
+    public PlayerCB(final String s, final Team team) {
+        super(s, team, "CB", true);
+        this.position = "CB";
+    }
+    
+    public PlayerCB(final String s, final Team team, final int[] array, final String s2) {
+        super(s, team, "CB", false);
+        this.setVariables(array, s2);
+        this.position = "CB";
+    }
+    
+    @Override
+    public ArrayList<String> getDetailAllStatsList(final int n) {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("Games: " + this.gamesPlayed + " (" + this.statsWins + "-" + (this.gamesPlayed - this.statsWins) + ")>Durability: " + Player.getLetterGrade(this.ratDur));
+        list.add("Football IQ: " + Player.getLetterGrade(this.ratFootIQ) + ">Coverage: " + Player.getLetterGrade(this.ratCBCov));
+        list.add("Speed: " + Player.getLetterGrade(this.ratCBSpd) + ">Tackling: " + Player.getLetterGrade(this.ratCBTkl));
+        list.add("Contract: " + this.contract.toString());
+        list.add("[B]CAREER STATS:");
+        list.addAll(this.getCareerStatsList());
+        return list;
+    }
+    
+    @Override
+    public ArrayList<String> getDetailStatsList(final int n) {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("Games: " + this.gamesPlayed + " (" + this.statsWins + "-" + (this.gamesPlayed - this.statsWins) + ")>Durability: " + Player.getLetterGrade(this.ratDur));
+        list.add("Football IQ: " + Player.getLetterGrade(this.ratFootIQ) + ">Coverage: " + Player.getLetterGrade(this.ratCBCov));
+        list.add("Speed: " + Player.getLetterGrade(this.ratCBSpd) + ">Tackling: " + Player.getLetterGrade(this.ratCBTkl));
+        list.add("Contract: " + this.contract.toString());
+        list.add(" > ");
+        return list;
+    }
+    
+    @Override
+    public ArrayList<String> getDetailStatsOffseason() {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("Potential: " + Player.getLetterGrade(this.ratPot) + ">Durability: " + Player.getLetterGrade(this.ratDur));
+        list.add("Football IQ: " + Player.getLetterGrade(this.ratFootIQ) + ">Coverage: " + Player.getLetterGrade(this.ratCBCov));
+        list.add("Speed: " + Player.getLetterGrade(this.ratCBSpd) + ">Tackling: " + Player.getLetterGrade(this.ratCBTkl));
+        list.add("Desired Contract: " + Contract.getContractFA(this).toString());
+        list.add("[B]CAREER STATS:");
+        list.addAll(this.getCareerStatsList());
+        return list;
+    }
+    
+    @Override
+    public String getInfoForLineup() {
+        if (this.injury != null) {
+            return this.getInitialName() + " [" + this.age + "] " + this.ratOvr + "/" + Player.getLetterGrade(this.ratPot) + " " + this.injury.toString();
+        }
+        return this.getInitialName() + " [" + this.age + "] " + this.ratOvr + "/" + Player.getLetterGrade(this.ratPot) + " (" + Player.getLetterGrade(this.ratCBCov) + ", " + Player.getLetterGrade(this.ratCBSpd) + ", " + Player.getLetterGrade(this.ratCBTkl) + ")";
+    }
+    
+    @Override
+    public int[] getRatings() {
+        return new int[] { this.ratCBCov, this.ratCBSpd, this.ratCBTkl };
+    }
+    
+    public void setOvr() {
+        this.ratOvr = (this.ratCBCov * 2 + this.ratCBSpd + this.ratCBTkl) / 4;
+    }
+    
+    public void setRatings(final int[] array) {
+        this.ratCBCov = array[0];
+        this.ratCBSpd = array[1];
+        this.ratCBTkl = array[2];
+        this.setOvr();
+    }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.PlayerCB
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

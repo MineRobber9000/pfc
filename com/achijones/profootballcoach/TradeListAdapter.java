@@ -1,76 +1,65 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package com.achijones.profootballcoach;
 
+import android.view.View$OnClickListener;
 import PFCpack.Player;
-import PFCpack.Team;
-import PFCpack.Trade;
-import PFCpack.TradePiece;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.View;
+import PFCpack.Trade;
+import android.content.Context;
+import PFCpack.TradePiece;
+import android.widget.ArrayAdapter;
 
-public class TradeListAdapter
-  extends ArrayAdapter<TradePiece>
+public class TradeListAdapter extends ArrayAdapter<TradePiece>
 {
-  private final Context context;
-  private final MainActivity mainAct;
-  private final TradePiece[] pieces;
-  private final Trade trade;
-  
-  public TradeListAdapter(Context paramContext, MainActivity paramMainActivity, TradePiece[] paramArrayOfTradePiece, Trade paramTrade)
-  {
-    super(paramContext, 2130968671, paramArrayOfTradePiece);
-    context = paramContext;
-    mainAct = paramMainActivity;
-    pieces = paramArrayOfTradePiece;
-    trade = paramTrade;
-  }
-  
-  public View getView(final int paramInt, View paramView, ViewGroup paramViewGroup)
-  {
-    paramView = ((LayoutInflater)context.getSystemService("layout_inflater")).inflate(2130968671, paramViewGroup, false);
-    paramViewGroup = (TextView)paramView.findViewById(2131558707);
-    TextView localTextView = (TextView)paramView.findViewById(2131558708);
-    Button localButton = (Button)paramView.findViewById(2131558709);
-    if (pieces[paramInt] != null)
-    {
-      if ((pieces[paramInt] instanceof Player)) {
-        localButton.setOnClickListener(new View.OnClickListener()
-        {
-          public void onClick(View paramAnonymousView)
-          {
-            mainAct.examinePlayer((Player)pieces[paramInt]);
-          }
-        });
-      }
-      for (;;)
-      {
-        paramViewGroup.setText(pieces[paramInt].getTradePieceInfo());
-        localTextView.setText("");
-        return paramView;
-        localButton.setVisibility(8);
-      }
+    private final Context context;
+    private final MainActivity mainAct;
+    private final TradePiece[] pieces;
+    private final Trade trade;
+    
+    public TradeListAdapter(final Context context, final MainActivity mainAct, final TradePiece[] pieces, final Trade trade) {
+        super(context, 2130968671, (Object[])pieces);
+        this.context = context;
+        this.mainAct = mainAct;
+        this.pieces = pieces;
+        this.trade = trade;
     }
-    if (paramInt == 0)
-    {
-      paramViewGroup.setText("");
-      localTextView.setText(trade.getATeam().getStrAbbrWL() + " offer:");
-      localButton.setVisibility(8);
-      return paramView;
+    
+    public View getView(final int n, View inflate, final ViewGroup viewGroup) {
+        inflate = ((LayoutInflater)this.context.getSystemService("layout_inflater")).inflate(2130968671, viewGroup, false);
+        final TextView textView = (TextView)inflate.findViewById(2131558707);
+        final TextView textView2 = (TextView)inflate.findViewById(2131558708);
+        final Button button = (Button)inflate.findViewById(2131558709);
+        if (this.pieces[n] != null) {
+            if (this.pieces[n] instanceof Player) {
+                button.setOnClickListener((View$OnClickListener)new View$OnClickListener() {
+                    public void onClick(final View view) {
+                        TradeListAdapter.this.mainAct.examinePlayer((Player)TradeListAdapter.this.pieces[n]);
+                    }
+                });
+            }
+            else {
+                button.setVisibility(8);
+            }
+            textView.setText((CharSequence)this.pieces[n].getTradePieceInfo());
+            textView2.setText((CharSequence)"");
+            return inflate;
+        }
+        if (n == 0) {
+            textView.setText((CharSequence)"");
+            textView2.setText((CharSequence)(this.trade.getATeam().getStrAbbrWL() + " offer:"));
+            button.setVisibility(8);
+            return inflate;
+        }
+        textView.setText((CharSequence)"");
+        textView2.setText((CharSequence)(this.trade.getBTeam().getStrAbbrWL() + " offer:"));
+        button.setVisibility(8);
+        return inflate;
     }
-    paramViewGroup.setText("");
-    localTextView.setText(trade.getBTeam().getStrAbbrWL() + " offer:");
-    localButton.setVisibility(8);
-    return paramView;
-  }
 }
-
-/* Location:
- * Qualified Name:     com.achijones.profootballcoach.TradeListAdapter
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

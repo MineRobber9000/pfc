@@ -1,1072 +1,862 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 public class Trade
 {
-  private ArrayList<TradePiece> aOffer;
-  private Team aTeam;
-  private ArrayList<TradePiece> bOffer;
-  private Team bTeam;
-  
-  public Trade(Team paramTeam1, Team paramTeam2)
-  {
-    aTeam = paramTeam1;
-    bTeam = paramTeam2;
-  }
-  
-  private static void addGoodNonStarters(Team paramTeam, ArrayList<TradePiece> paramArrayList)
-  {
-    Player localPlayer = getGoodNonStarterList(teamQBs, 1);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
+    private ArrayList<TradePiece> aOffer;
+    private Team aTeam;
+    private ArrayList<TradePiece> bOffer;
+    private Team bTeam;
+    
+    public Trade(final Team aTeam, final Team bTeam) {
+        this.aTeam = aTeam;
+        this.bTeam = bTeam;
     }
-    localPlayer = getGoodNonStarterList(teamRBs, 2);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    localPlayer = getGoodNonStarterList(teamWRs, 2);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    localPlayer = getGoodNonStarterList(teamOLs, 3);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    localPlayer = getGoodNonStarterList(teamKs, 1);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    localPlayer = getGoodNonStarterList(teamSs, 1);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    localPlayer = getGoodNonStarterList(teamCBs, 2);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    localPlayer = getGoodNonStarterList(teamDLs, 3);
-    if (localPlayer != null) {
-      paramArrayList.add(localPlayer);
-    }
-    paramTeam = getGoodNonStarterList(teamLBs, 2);
-    if (paramTeam != null) {
-      paramArrayList.add(paramTeam);
-    }
-  }
-  
-  private static int calculateAvgTalentPosition(ArrayList<? extends Player> paramArrayList, int paramInt, boolean paramBoolean)
-  {
-    if (paramBoolean)
-    {
-      if (paramArrayList.size() >= paramInt) {}
-    }
-    else {
-      while (paramArrayList.size() <= paramInt) {
-        return 0;
-      }
-    }
-    int m = 0;
-    int k = 0;
-    int j = 0;
-    while (j < paramArrayList.size())
-    {
-      int n = k;
-      int i = m;
-      if (j < paramInt + 1)
-      {
-        n = ((Player)paramArrayList.get(j)).getRatOvr();
-        i = n;
-        if (n > 85) {
-          i = 85;
+    
+    private static void addGoodNonStarters(final Team team, final ArrayList<TradePiece> list) {
+        final Player goodNonStarterList = getGoodNonStarterList(team.teamQBs, 1);
+        if (goodNonStarterList != null) {
+            list.add(goodNonStarterList);
         }
-        n = i;
-        if (i < 70) {
-          n = 70;
+        final Player goodNonStarterList2 = getGoodNonStarterList(team.teamRBs, 2);
+        if (goodNonStarterList2 != null) {
+            list.add(goodNonStarterList2);
         }
-        i = m + n;
-        n = k + 1;
-      }
-      j += 1;
-      k = n;
-      m = i;
+        final Player goodNonStarterList3 = getGoodNonStarterList(team.teamWRs, 2);
+        if (goodNonStarterList3 != null) {
+            list.add(goodNonStarterList3);
+        }
+        final Player goodNonStarterList4 = getGoodNonStarterList(team.teamOLs, 3);
+        if (goodNonStarterList4 != null) {
+            list.add(goodNonStarterList4);
+        }
+        final Player goodNonStarterList5 = getGoodNonStarterList(team.teamKs, 1);
+        if (goodNonStarterList5 != null) {
+            list.add(goodNonStarterList5);
+        }
+        final Player goodNonStarterList6 = getGoodNonStarterList(team.teamSs, 1);
+        if (goodNonStarterList6 != null) {
+            list.add(goodNonStarterList6);
+        }
+        final Player goodNonStarterList7 = getGoodNonStarterList(team.teamCBs, 2);
+        if (goodNonStarterList7 != null) {
+            list.add(goodNonStarterList7);
+        }
+        final Player goodNonStarterList8 = getGoodNonStarterList(team.teamDLs, 3);
+        if (goodNonStarterList8 != null) {
+            list.add(goodNonStarterList8);
+        }
+        final Player goodNonStarterList9 = getGoodNonStarterList(team.teamLBs, 2);
+        if (goodNonStarterList9 != null) {
+            list.add(goodNonStarterList9);
+        }
     }
-    return m / k;
-  }
-  
-  public static boolean checkUntradable(Team paramTeam, Player paramPlayer)
-  {
-    if ((position.equals("QB")) && (paramPlayer.getRatOvr() > 90)) {}
-    while (((position.equals("RB")) && (paramPlayer.getRatOvr() > 92)) || ((position.equals("WR")) && (paramPlayer.getRatOvr() > 95))) {
-      return true;
-    }
-    return false;
-  }
-  
-  private static DraftPick findDraftPickClosestValue(ArrayList<DraftPick> paramArrayList1, int paramInt, boolean paramBoolean, ArrayList<DraftPick> paramArrayList2)
-  {
-    int n = 10000;
-    int m = 0;
-    int i = 0;
-    if (i < paramArrayList1.size())
-    {
-      int j;
-      int k;
-      if (paramBoolean)
-      {
-        j = n;
-        k = m;
-        if (!paramArrayList2.contains(paramArrayList1.get(i)))
-        {
-          j = n;
-          k = m;
-          if (paramInt - ((DraftPick)paramArrayList1.get(i)).getTradeValue() > 0)
-          {
-            j = n;
-            k = m;
-            if (paramInt - ((DraftPick)paramArrayList1.get(i)).getTradeValue() <= n)
-            {
-              j = Math.abs(paramInt - ((DraftPick)paramArrayList1.get(i)).getTradeValue());
-              k = i;
+    
+    private static int calculateAvgTalentPosition(final ArrayList<? extends Player> list, final int n, final boolean b) {
+        Label_0022: {
+            if (b) {
+                if (list.size() >= n) {
+                    break Label_0022;
+                }
             }
-          }
-        }
-      }
-      for (;;)
-      {
-        i += 1;
-        n = j;
-        m = k;
-        break;
-        j = n;
-        k = m;
-        if (!paramArrayList2.contains(paramArrayList1.get(i)))
-        {
-          j = n;
-          k = m;
-          if (((DraftPick)paramArrayList1.get(i)).getTradeValue() - paramInt > 0)
-          {
-            j = n;
-            k = m;
-            if (((DraftPick)paramArrayList1.get(i)).getTradeValue() - paramInt <= n)
-            {
-              j = Math.abs(((DraftPick)paramArrayList1.get(i)).getTradeValue() - paramInt);
-              k = i;
+            else if (list.size() > n) {
+                break Label_0022;
             }
-          }
+            return 0;
         }
-      }
-    }
-    if (n != 10000) {
-      return (DraftPick)paramArrayList1.get(m);
-    }
-    if (!paramBoolean)
-    {
-      paramArrayList1 = paramArrayList1.iterator();
-      while (paramArrayList1.hasNext())
-      {
-        DraftPick localDraftPick = (DraftPick)paramArrayList1.next();
-        if (!paramArrayList2.contains(localDraftPick)) {
-          return localDraftPick;
-        }
-      }
-      return null;
-    }
-    return null;
-  }
-  
-  private static Player findPlayerDeepestPosition(Team paramTeam1, Team paramTeam2, ArrayList<Player> paramArrayList, int paramInt)
-  {
-    paramTeam2.sortPlayers();
-    int m = calculateAvgTalentPosition(teamQBs, 1, false);
-    int n = calculateAvgTalentPosition(teamRBs, 2, false);
-    int i1 = calculateAvgTalentPosition(teamWRs, 3, false);
-    int i2 = calculateAvgTalentPosition(teamOLs, 5, false);
-    int i3 = calculateAvgTalentPosition(teamKs, 1, false);
-    int i4 = calculateAvgTalentPosition(teamSs, 1, false);
-    int i5 = calculateAvgTalentPosition(teamCBs, 3, false);
-    int i6 = calculateAvgTalentPosition(teamDLs, 4, false);
-    int i = calculateAvgTalentPosition(teamLBs, 3, false);
-    Object localObject = new int[9];
-    localObject[0] = m;
-    localObject[1] = n;
-    localObject[2] = i1;
-    localObject[3] = i2;
-    localObject[4] = i3;
-    localObject[5] = i4;
-    localObject[6] = i5;
-    localObject[7] = i6;
-    localObject[8] = i;
-    Arrays.sort((int[])localObject);
-    i = localObject.length - 1;
-    int j = 1;
-    ArrayList localArrayList = teamKs;
-    while (i > 0)
-    {
-      int k;
-      Player localPlayer;
-      if (m == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamQBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamQBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (n == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamRBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamRBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (i1 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamWRs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamWRs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (i2 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamOLs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamOLs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (i3 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamKs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamKs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (i4 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamSs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamSs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (i5 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamCBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamCBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else if (i6 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamDLs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamDLs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-      else
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamLBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamLBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam2.removePlayer(localPlayer);
-          paramTeam1.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i -= 1;
-        j = k;
-      }
-    }
-    paramInt = 0;
-    while (paramInt < localArrayList.size())
-    {
-      localObject = (Player)localArrayList.get(localArrayList.size() - paramInt - 1);
-      if (!paramArrayList.contains(localObject))
-      {
-        paramTeam2.removePlayer((Player)localObject);
-        paramTeam1.addPlayer((Player)localObject);
-        return (Player)localObject;
-      }
-      paramInt += 1;
-    }
-    return null;
-  }
-  
-  private static Player findPlayerListClosestOvr(ArrayList<? extends Player> paramArrayList, ArrayList<Player> paramArrayList1, int paramInt)
-  {
-    int i = 0;
-    if (paramArrayList.size() > 0)
-    {
-      Iterator localIterator = paramArrayList1.iterator();
-      while (localIterator.hasNext()) {
-        if (((Player)localIterator.next()).getPosition().equals(((Player)paramArrayList.get(0)).getPosition())) {
-          i += 1;
-        }
-      }
-    }
-    return null;
-    if (i >= 2) {
-      return null;
-    }
-    int m = 100;
-    int j = 0;
-    i = 0;
-    while (i < paramArrayList.size())
-    {
-      int n = m;
-      int k = j;
-      if (Math.abs(((Player)paramArrayList.get(i)).getRatOvr() - paramInt) <= m)
-      {
-        n = m;
-        k = j;
-        if (!((Player)paramArrayList.get(i)).isInjured())
-        {
-          n = Math.abs(((Player)paramArrayList.get(i)).getRatOvr() - paramInt);
-          k = i;
-        }
-      }
-      i += 1;
-      m = n;
-      j = k;
-    }
-    if ((paramArrayList.size() > 0) && (!paramArrayList1.contains(paramArrayList.get(j)))) {
-      return (Player)paramArrayList.get(j);
-    }
-    return null;
-  }
-  
-  private static Player findPlayerWeakestPosition(Team paramTeam1, Team paramTeam2, ArrayList<Player> paramArrayList, int paramInt)
-  {
-    paramTeam2.sortPlayers();
-    int m = calculateAvgTalentPosition(teamQBs, 1, true);
-    int n = calculateAvgTalentPosition(teamRBs, 2, true);
-    int i1 = calculateAvgTalentPosition(teamWRs, 3, true);
-    int i2 = calculateAvgTalentPosition(teamOLs, 5, true);
-    int i3 = calculateAvgTalentPosition(teamKs, 1, true);
-    int i4 = calculateAvgTalentPosition(teamSs, 1, true);
-    int i5 = calculateAvgTalentPosition(teamCBs, 3, true);
-    int i6 = calculateAvgTalentPosition(teamDLs, 4, true);
-    int i = calculateAvgTalentPosition(teamLBs, 3, true);
-    Object localObject = new int[9];
-    localObject[0] = m;
-    localObject[1] = n;
-    localObject[2] = i1;
-    localObject[3] = i2;
-    localObject[4] = i3;
-    localObject[5] = i4;
-    localObject[6] = i5;
-    localObject[7] = i6;
-    localObject[8] = i;
-    Arrays.sort((int[])localObject);
-    i = 0;
-    int j = 1;
-    ArrayList localArrayList = teamOLs;
-    while (i < localObject.length - 1)
-    {
-      int k;
-      Player localPlayer;
-      if (m == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamQBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamQBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (n == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamRBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamRBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (i1 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamWRs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamWRs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (i2 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamOLs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamOLs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (i3 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamKs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamKs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (i4 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamSs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamSs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (i5 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamCBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamCBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else if (i6 == localObject[i])
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamDLs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamDLs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-      else
-      {
-        k = j;
-        if (j != 0)
-        {
-          localArrayList = teamLBs;
-          k = 0;
-        }
-        localPlayer = findPlayerListClosestOvr(teamLBs, paramArrayList, paramInt);
-        if (localPlayer != null)
-        {
-          paramTeam1.removePlayer(localPlayer);
-          paramTeam2.addPlayer(localPlayer);
-          return localPlayer;
-        }
-        i += 1;
-        j = k;
-      }
-    }
-    paramInt = 0;
-    while (paramInt < localArrayList.size())
-    {
-      localObject = (Player)localArrayList.get(paramInt);
-      if (!paramArrayList.contains(localObject))
-      {
-        paramTeam1.removePlayer((Player)localObject);
-        paramTeam2.addPlayer((Player)localObject);
-        return (Player)localObject;
-      }
-      paramInt += 1;
-    }
-    return null;
-  }
-  
-  private static Player getGoodNonStarterList(ArrayList<? extends Player> paramArrayList, int paramInt)
-  {
-    while (paramInt < paramArrayList.size())
-    {
-      if (((Player)paramArrayList.get(paramInt)).getRatOvr() >= 80) {
-        return (Player)paramArrayList.get(paramInt);
-      }
-      paramInt += 1;
-    }
-    return null;
-  }
-  
-  public static int getTotalValue(ArrayList<TradePiece> paramArrayList)
-  {
-    int i = 0;
-    paramArrayList = paramArrayList.iterator();
-    while (paramArrayList.hasNext()) {
-      i += ((TradePiece)paramArrayList.next()).getTradeValue();
-    }
-    return i;
-  }
-  
-  public static Trade getTradeOfferFromAI(Team paramTeam1, Team paramTeam2, ArrayList<TradePiece> paramArrayList)
-  {
-    double d2 = wins / 25.0D + 1.2D;
-    Trade localTrade = new Trade(paramTeam1, paramTeam2);
-    Object localObject1 = new ArrayList();
-    ((ArrayList)localObject1).addAll(paramArrayList);
-    int i = 0;
-    double d1 = 0.0D;
-    int k = 7;
-    int j = 0;
-    paramArrayList = new ArrayList();
-    Object localObject2 = ((ArrayList)localObject1).iterator();
-    int i1;
-    while (((Iterator)localObject2).hasNext())
-    {
-      localObject3 = (TradePiece)((Iterator)localObject2).next();
-      if ((localObject3 instanceof DraftPick))
-      {
-        paramArrayList.add((DraftPick)localObject3);
-        m = i + ((TradePiece)localObject3).getTradeValue();
-        i1 = ((DraftPick)localObject3).getRound();
-        n = j + (8 - i1);
-        i = m;
-        j = n;
-        if (i1 < k)
-        {
-          k = i1;
-          i = m;
-          j = n;
-        }
-      }
-      else
-      {
-        if (paramTeam1.getValueAdded((Player)localObject3) > 0) {
-          i += ((TradePiece)localObject3).getTradeValue();
-        }
-        for (;;)
-        {
-          d1 += ((Player)localObject3).getContract().getMoneyPerYear();
-          break;
-          i += paramTeam1.getValueAdded((Player)localObject3);
-        }
-      }
-    }
-    localObject2 = new ArrayList();
-    int n = 0;
-    int m = 0;
-    Object localObject3 = ((ArrayList)localObject1).iterator();
-    Object localObject4;
-    while (((Iterator)localObject3).hasNext())
-    {
-      localObject4 = (TradePiece)((Iterator)localObject3).next();
-      if ((localObject4 instanceof Player))
-      {
-        localObject4 = (Player)localObject4;
-        paramTeam1.addPlayer((Player)localObject4);
-        paramTeam2.removePlayer((Player)localObject4);
-        n += ((Player)localObject4).getRatOvr();
-        ((ArrayList)localObject2).add(localObject4);
-        m += 1;
-      }
-    }
-    if (m > 0) {}
-    Object localObject5;
-    for (k = n / m + j / 2;; k = 81 - (int)(1.5D * k))
-    {
-      localObject4 = new ArrayList();
-      localObject3 = new ArrayList();
-      j = 0;
-      while ((j < m) && (getTotalValue((ArrayList)localObject4) * d2 < i))
-      {
-        localObject5 = findPlayerDeepestPosition(paramTeam2, paramTeam1, (ArrayList)localObject2, k);
-        if (localObject5 != null)
-        {
-          ((ArrayList)localObject4).add(localObject5);
-          ((ArrayList)localObject3).add(localObject5);
-        }
-        j += 1;
-      }
-    }
-    if (getTotalValue((ArrayList)localObject4) * d2 < i)
-    {
-      j = 0;
-      m = 0;
-      localObject5 = new ArrayList();
-      if (getTotalValue((ArrayList)localObject4) * d2 < i)
-      {
-        Object localObject6;
-        if (((j == 0) || (j == 1)) && (m < 6))
-        {
-          n = m;
-          if (draftPicks.size() > 0)
-          {
-            localObject6 = findDraftPickClosestValue(draftPicks, (int)(i - getTotalValue((ArrayList)localObject4) * d2), true, (ArrayList)localObject5);
-            if (localObject6 != null)
-            {
-              ((ArrayList)localObject5).add(localObject6);
-              ((ArrayList)localObject4).add(localObject6);
+        int n2 = 0;
+        int n3 = 0;
+        int n4;
+        int n5;
+        for (int i = 0; i < list.size(); ++i, n3 = n4, n2 = n5) {
+            n4 = n3;
+            n5 = n2;
+            if (i < n + 1) {
+                int ratOvr;
+                if ((ratOvr = ((Player)list.get(i)).getRatOvr()) > 85) {
+                    ratOvr = 85;
+                }
+                int n6;
+                if ((n6 = ratOvr) < 70) {
+                    n6 = 70;
+                }
+                n5 = n2 + n6;
+                n4 = n3 + 1;
             }
-            n = m + 1;
-          }
         }
-        for (;;)
-        {
-          i1 = j + 1;
-          m = n;
-          j = i1;
-          if (i1 <= 2) {
-            break;
-          }
-          j = 0;
-          m = n;
-          break;
-          localObject6 = findPlayerDeepestPosition(paramTeam2, paramTeam1, (ArrayList)localObject2, k);
-          n = m;
-          if (localObject6 != null)
-          {
-            ((ArrayList)localObject4).add(localObject6);
-            ((ArrayList)localObject3).add(localObject6);
-            n = m;
-          }
-        }
-      }
+        return n2 / n3;
     }
-    if (getTotalValue((ArrayList)localObject4) * d2 > i)
-    {
-      i = 0;
-      j = 0;
-      if (getTotalValue((ArrayList)localObject4) * d2 > getTotalValue((ArrayList)localObject1))
-      {
-        if (((i == 0) || (i == 1)) && (j < 6))
-        {
-          m = j;
-          if (draftPicks.size() > 0)
-          {
-            localObject5 = findDraftPickClosestValue(draftPicks, (int)(getTotalValue((ArrayList)localObject4) * d2 - getTotalValue((ArrayList)localObject1)), false, paramArrayList);
-            if (localObject5 != null)
-            {
-              paramArrayList.add(localObject5);
-              ((ArrayList)localObject1).add(localObject5);
+    
+    public static boolean checkUntradable(final Team team, final Player player) {
+        return (player.position.equals("QB") && player.getRatOvr() > 90) || (player.position.equals("RB") && player.getRatOvr() > 92) || (player.position.equals("WR") && player.getRatOvr() > 95);
+    }
+    
+    private static DraftPick findDraftPickClosestValue(final ArrayList<DraftPick> list, final int n, final boolean b, final ArrayList<DraftPick> list2) {
+        int n2 = 10000;
+        int n3 = 0;
+        int n4;
+        int n5;
+        for (int i = 0; i < list.size(); ++i, n2 = n4, n3 = n5) {
+            if (b) {
+                n4 = n2;
+                n5 = n3;
+                if (!list2.contains(list.get(i))) {
+                    n4 = n2;
+                    n5 = n3;
+                    if (n - list.get(i).getTradeValue() > 0) {
+                        n4 = n2;
+                        n5 = n3;
+                        if (n - list.get(i).getTradeValue() <= n2) {
+                            n4 = Math.abs(n - list.get(i).getTradeValue());
+                            n5 = i;
+                        }
+                    }
+                }
             }
-            m = j + 1;
-          }
+            else {
+                n4 = n2;
+                n5 = n3;
+                if (!list2.contains(list.get(i))) {
+                    n4 = n2;
+                    n5 = n3;
+                    if (list.get(i).getTradeValue() - n > 0) {
+                        n4 = n2;
+                        n5 = n3;
+                        if (list.get(i).getTradeValue() - n <= n2) {
+                            n4 = Math.abs(list.get(i).getTradeValue() - n);
+                            n5 = i;
+                        }
+                    }
+                }
+            }
         }
-        for (;;)
-        {
-          n = i + 1;
-          j = m;
-          i = n;
-          if (n <= 2) {
-            break;
-          }
-          i = 0;
-          j = m;
-          break;
-          localObject5 = findPlayerWeakestPosition(paramTeam2, paramTeam1, (ArrayList)localObject3, k);
-          m = j;
-          if (localObject5 != null)
-          {
-            ((ArrayList)localObject1).add(localObject5);
-            ((ArrayList)localObject2).add(localObject5);
-            m = j;
-          }
+        if (n2 != 10000) {
+            return list.get(n3);
         }
-      }
-    }
-    Collections.sort((List)localObject4, new TradePieceComparator());
-    Collections.sort((List)localObject1, new TradePieceComparator());
-    localTrade.setOffer(paramTeam1, (ArrayList)localObject4);
-    localTrade.setOffer(paramTeam2, (ArrayList)localObject1);
-    paramArrayList = ((ArrayList)localObject2).iterator();
-    while (paramArrayList.hasNext())
-    {
-      localObject1 = (Player)paramArrayList.next();
-      paramTeam1.removePlayer((Player)localObject1);
-      paramTeam2.addPlayer((Player)localObject1);
-    }
-    paramArrayList = ((ArrayList)localObject3).iterator();
-    while (paramArrayList.hasNext())
-    {
-      localObject1 = (Player)paramArrayList.next();
-      paramTeam1.addPlayer((Player)localObject1);
-      paramTeam2.removePlayer((Player)localObject1);
-    }
-    paramTeam2.sortPlayers();
-    paramTeam1.sortPlayers();
-    return localTrade;
-  }
-  
-  public static Trade getTradeOfferFromUserTeam(Team paramTeam1, Team paramTeam2, ArrayList<TradePiece> paramArrayList)
-  {
-    double d2 = wins / 25.0D + 1.2D;
-    Trade localTrade = new Trade(paramTeam1, paramTeam2);
-    Object localObject1 = new ArrayList();
-    ((ArrayList)localObject1).addAll(paramArrayList);
-    int i = 0;
-    double d1 = 0.0D;
-    int k = 7;
-    int j = 0;
-    paramArrayList = ((ArrayList)localObject1).iterator();
-    int i1;
-    while (paramArrayList.hasNext())
-    {
-      localObject2 = (TradePiece)paramArrayList.next();
-      if ((localObject2 instanceof DraftPick))
-      {
-        m = i + ((TradePiece)localObject2).getTradeValue();
-        i1 = ((DraftPick)localObject2).getRound();
-        n = j + (8 - i1);
-        i = m;
-        j = n;
-        if (i1 < k)
-        {
-          k = i1;
-          i = m;
-          j = n;
+        if (!b) {
+            for (final DraftPick draftPick : list) {
+                if (!list2.contains(draftPick)) {
+                    return draftPick;
+                }
+            }
+            return null;
         }
-      }
-      else
-      {
-        i += ((TradePiece)localObject2).getTradeValue();
-        d1 += ((Player)localObject2).getContract().getMoneyPerYear();
-      }
+        return null;
     }
-    paramArrayList = new ArrayList();
-    int n = 0;
-    int m = 0;
-    Object localObject2 = ((ArrayList)localObject1).iterator();
-    Object localObject3;
-    while (((Iterator)localObject2).hasNext())
-    {
-      localObject3 = (TradePiece)((Iterator)localObject2).next();
-      if ((localObject3 instanceof Player))
-      {
-        localObject3 = (Player)localObject3;
-        paramTeam2.removePlayer((Player)localObject3);
-        n += ((Player)localObject3).getRatOvr();
-        paramArrayList.add(localObject3);
-        m += 1;
-      }
-    }
-    if (m > 0) {}
-    for (k = n / m + (int)(j / 1.5D);; k = 84 - (int)(1.5D * k))
-    {
-      localObject3 = new ArrayList();
-      localObject2 = new ArrayList();
-      j = 0;
-      while ((j < m) && (getTotalValue((ArrayList)localObject3) < i * d2))
-      {
-        localObject4 = findPlayerWeakestPosition(paramTeam1, paramTeam2, paramArrayList, k);
-        if (localObject4 != null)
-        {
-          ((ArrayList)localObject3).add(localObject4);
-          ((ArrayList)localObject2).add(localObject4);
+    
+    private static Player findPlayerDeepestPosition(final Team team, final Team team2, final ArrayList<Player> list, int i) {
+        team2.sortPlayers();
+        final int calculateAvgTalentPosition = calculateAvgTalentPosition(team2.teamQBs, 1, false);
+        final int calculateAvgTalentPosition2 = calculateAvgTalentPosition(team2.teamRBs, 2, false);
+        final int calculateAvgTalentPosition3 = calculateAvgTalentPosition(team2.teamWRs, 3, false);
+        final int calculateAvgTalentPosition4 = calculateAvgTalentPosition(team2.teamOLs, 5, false);
+        final int calculateAvgTalentPosition5 = calculateAvgTalentPosition(team2.teamKs, 1, false);
+        final int calculateAvgTalentPosition6 = calculateAvgTalentPosition(team2.teamSs, 1, false);
+        final int calculateAvgTalentPosition7 = calculateAvgTalentPosition(team2.teamCBs, 3, false);
+        final int calculateAvgTalentPosition8 = calculateAvgTalentPosition(team2.teamDLs, 4, false);
+        final int[] array = { calculateAvgTalentPosition, calculateAvgTalentPosition2, calculateAvgTalentPosition3, calculateAvgTalentPosition4, calculateAvgTalentPosition5, calculateAvgTalentPosition6, calculateAvgTalentPosition7, calculateAvgTalentPosition8, calculateAvgTalentPosition(team2.teamLBs, 3, false) };
+        Arrays.sort(array);
+        int j = array.length - 1;
+        int n = 1;
+        Object o = team2.teamKs;
+        while (j > 0) {
+            if (calculateAvgTalentPosition == array[j]) {
+                int n2;
+                if ((n2 = n) != 0) {
+                    o = team2.teamQBs;
+                    n2 = 0;
+                }
+                final Player playerListClosestOvr = findPlayerListClosestOvr(team2.teamQBs, list, i);
+                if (playerListClosestOvr != null) {
+                    team2.removePlayer(playerListClosestOvr);
+                    team.addPlayer(playerListClosestOvr);
+                    return playerListClosestOvr;
+                }
+                --j;
+                n = n2;
+            }
+            else if (calculateAvgTalentPosition2 == array[j]) {
+                int n3;
+                if ((n3 = n) != 0) {
+                    o = team2.teamRBs;
+                    n3 = 0;
+                }
+                final Player playerListClosestOvr2 = findPlayerListClosestOvr(team2.teamRBs, list, i);
+                if (playerListClosestOvr2 != null) {
+                    team2.removePlayer(playerListClosestOvr2);
+                    team.addPlayer(playerListClosestOvr2);
+                    return playerListClosestOvr2;
+                }
+                --j;
+                n = n3;
+            }
+            else if (calculateAvgTalentPosition3 == array[j]) {
+                int n4;
+                if ((n4 = n) != 0) {
+                    o = team2.teamWRs;
+                    n4 = 0;
+                }
+                final Player playerListClosestOvr3 = findPlayerListClosestOvr(team2.teamWRs, list, i);
+                if (playerListClosestOvr3 != null) {
+                    team2.removePlayer(playerListClosestOvr3);
+                    team.addPlayer(playerListClosestOvr3);
+                    return playerListClosestOvr3;
+                }
+                --j;
+                n = n4;
+            }
+            else if (calculateAvgTalentPosition4 == array[j]) {
+                int n5;
+                if ((n5 = n) != 0) {
+                    o = team2.teamOLs;
+                    n5 = 0;
+                }
+                final Player playerListClosestOvr4 = findPlayerListClosestOvr(team2.teamOLs, list, i);
+                if (playerListClosestOvr4 != null) {
+                    team2.removePlayer(playerListClosestOvr4);
+                    team.addPlayer(playerListClosestOvr4);
+                    return playerListClosestOvr4;
+                }
+                --j;
+                n = n5;
+            }
+            else if (calculateAvgTalentPosition5 == array[j]) {
+                int n6;
+                if ((n6 = n) != 0) {
+                    o = team2.teamKs;
+                    n6 = 0;
+                }
+                final Player playerListClosestOvr5 = findPlayerListClosestOvr(team2.teamKs, list, i);
+                if (playerListClosestOvr5 != null) {
+                    team2.removePlayer(playerListClosestOvr5);
+                    team.addPlayer(playerListClosestOvr5);
+                    return playerListClosestOvr5;
+                }
+                --j;
+                n = n6;
+            }
+            else if (calculateAvgTalentPosition6 == array[j]) {
+                int n7;
+                if ((n7 = n) != 0) {
+                    o = team2.teamSs;
+                    n7 = 0;
+                }
+                final Player playerListClosestOvr6 = findPlayerListClosestOvr(team2.teamSs, list, i);
+                if (playerListClosestOvr6 != null) {
+                    team2.removePlayer(playerListClosestOvr6);
+                    team.addPlayer(playerListClosestOvr6);
+                    return playerListClosestOvr6;
+                }
+                --j;
+                n = n7;
+            }
+            else if (calculateAvgTalentPosition7 == array[j]) {
+                int n8;
+                if ((n8 = n) != 0) {
+                    o = team2.teamCBs;
+                    n8 = 0;
+                }
+                final Player playerListClosestOvr7 = findPlayerListClosestOvr(team2.teamCBs, list, i);
+                if (playerListClosestOvr7 != null) {
+                    team2.removePlayer(playerListClosestOvr7);
+                    team.addPlayer(playerListClosestOvr7);
+                    return playerListClosestOvr7;
+                }
+                --j;
+                n = n8;
+            }
+            else if (calculateAvgTalentPosition8 == array[j]) {
+                int n9;
+                if ((n9 = n) != 0) {
+                    o = team2.teamDLs;
+                    n9 = 0;
+                }
+                final Player playerListClosestOvr8 = findPlayerListClosestOvr(team2.teamDLs, list, i);
+                if (playerListClosestOvr8 != null) {
+                    team2.removePlayer(playerListClosestOvr8);
+                    team.addPlayer(playerListClosestOvr8);
+                    return playerListClosestOvr8;
+                }
+                --j;
+                n = n9;
+            }
+            else {
+                int n10;
+                if ((n10 = n) != 0) {
+                    o = team2.teamLBs;
+                    n10 = 0;
+                }
+                final Player playerListClosestOvr9 = findPlayerListClosestOvr(team2.teamLBs, list, i);
+                if (playerListClosestOvr9 != null) {
+                    team2.removePlayer(playerListClosestOvr9);
+                    team.addPlayer(playerListClosestOvr9);
+                    return playerListClosestOvr9;
+                }
+                --j;
+                n = n10;
+            }
         }
-        j += 1;
-      }
-    }
-    j = 0;
-    m = 0;
-    Object localObject4 = new ArrayList();
-    if (getTotalValue((ArrayList)localObject3) < i * d2)
-    {
-      Object localObject5;
-      if (((j == 0) || (j == 1)) && (m < 6))
-      {
-        n = m;
-        if (draftPicks.size() > 0)
-        {
-          localObject5 = findDraftPickClosestValue(draftPicks, (int)(i * d2 - getTotalValue((ArrayList)localObject3)), false, (ArrayList)localObject4);
-          if (localObject5 != null)
-          {
-            ((ArrayList)localObject4).add(localObject5);
-            ((ArrayList)localObject3).add(localObject5);
-          }
-          n = m + 1;
+        Player player;
+        for (i = 0; i < ((ArrayList)o).size(); ++i) {
+            player = ((ArrayList<Player>)o).get(((ArrayList)o).size() - i - 1);
+            if (!list.contains(player)) {
+                team2.removePlayer(player);
+                team.addPlayer(player);
+                return player;
+            }
         }
-      }
-      for (;;)
-      {
-        i1 = j + 1;
-        m = n;
-        j = i1;
-        if (i1 <= 2) {
-          break;
+        return null;
+    }
+    
+    private static Player findPlayerListClosestOvr(final ArrayList<? extends Player> list, final ArrayList<Player> list2, final int n) {
+        int n2 = 0;
+        if (list.size() <= 0) {
+            return null;
         }
-        j = 0;
-        m = n;
-        break;
-        localObject5 = findPlayerWeakestPosition(paramTeam1, paramTeam2, paramArrayList, k);
-        n = m;
-        if (localObject5 != null)
-        {
-          ((ArrayList)localObject3).add(localObject5);
-          ((ArrayList)localObject2).add(localObject5);
-          n = m;
+        final Iterator<Player> iterator = list2.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getPosition().equals(((Player)list.get(0)).getPosition())) {
+                ++n2;
+            }
         }
-      }
+        if (n2 >= 2) {
+            return null;
+        }
+        int n3 = 100;
+        int n4 = 0;
+        int abs;
+        int n5;
+        for (int i = 0; i < list.size(); ++i, n3 = abs, n4 = n5) {
+            abs = n3;
+            n5 = n4;
+            if (Math.abs(((Player)list.get(i)).getRatOvr() - n) <= n3) {
+                abs = n3;
+                n5 = n4;
+                if (!((Player)list.get(i)).isInjured()) {
+                    abs = Math.abs(((Player)list.get(i)).getRatOvr() - n);
+                    n5 = i;
+                }
+            }
+        }
+        if (list.size() > 0 && !list2.contains(list.get(n4))) {
+            return (Player)list.get(n4);
+        }
+        return null;
     }
-    Collections.sort((List)localObject3, new TradePieceComparator());
-    Collections.sort((List)localObject1, new TradePieceComparator());
-    localTrade.setOffer(paramTeam1, (ArrayList)localObject3);
-    localTrade.setOffer(paramTeam2, (ArrayList)localObject1);
-    paramArrayList = paramArrayList.iterator();
-    while (paramArrayList.hasNext())
-    {
-      localObject1 = (Player)paramArrayList.next();
-      paramTeam2.addPlayer((Player)localObject1);
-      paramTeam1.removePlayer((Player)localObject1);
+    
+    private static Player findPlayerWeakestPosition(final Team team, final Team team2, final ArrayList<Player> list, int i) {
+        team2.sortPlayers();
+        final int calculateAvgTalentPosition = calculateAvgTalentPosition(team2.teamQBs, 1, true);
+        final int calculateAvgTalentPosition2 = calculateAvgTalentPosition(team2.teamRBs, 2, true);
+        final int calculateAvgTalentPosition3 = calculateAvgTalentPosition(team2.teamWRs, 3, true);
+        final int calculateAvgTalentPosition4 = calculateAvgTalentPosition(team2.teamOLs, 5, true);
+        final int calculateAvgTalentPosition5 = calculateAvgTalentPosition(team2.teamKs, 1, true);
+        final int calculateAvgTalentPosition6 = calculateAvgTalentPosition(team2.teamSs, 1, true);
+        final int calculateAvgTalentPosition7 = calculateAvgTalentPosition(team2.teamCBs, 3, true);
+        final int calculateAvgTalentPosition8 = calculateAvgTalentPosition(team2.teamDLs, 4, true);
+        final int[] array = { calculateAvgTalentPosition, calculateAvgTalentPosition2, calculateAvgTalentPosition3, calculateAvgTalentPosition4, calculateAvgTalentPosition5, calculateAvgTalentPosition6, calculateAvgTalentPosition7, calculateAvgTalentPosition8, calculateAvgTalentPosition(team2.teamLBs, 3, true) };
+        Arrays.sort(array);
+        int j = 0;
+        int n = 1;
+        Object o = team.teamOLs;
+        while (j < array.length - 1) {
+            if (calculateAvgTalentPosition == array[j]) {
+                int n2;
+                if ((n2 = n) != 0) {
+                    o = team.teamQBs;
+                    n2 = 0;
+                }
+                final Player playerListClosestOvr = findPlayerListClosestOvr(team.teamQBs, list, i);
+                if (playerListClosestOvr != null) {
+                    team.removePlayer(playerListClosestOvr);
+                    team2.addPlayer(playerListClosestOvr);
+                    return playerListClosestOvr;
+                }
+                ++j;
+                n = n2;
+            }
+            else if (calculateAvgTalentPosition2 == array[j]) {
+                int n3;
+                if ((n3 = n) != 0) {
+                    o = team.teamRBs;
+                    n3 = 0;
+                }
+                final Player playerListClosestOvr2 = findPlayerListClosestOvr(team.teamRBs, list, i);
+                if (playerListClosestOvr2 != null) {
+                    team.removePlayer(playerListClosestOvr2);
+                    team2.addPlayer(playerListClosestOvr2);
+                    return playerListClosestOvr2;
+                }
+                ++j;
+                n = n3;
+            }
+            else if (calculateAvgTalentPosition3 == array[j]) {
+                int n4;
+                if ((n4 = n) != 0) {
+                    o = team.teamWRs;
+                    n4 = 0;
+                }
+                final Player playerListClosestOvr3 = findPlayerListClosestOvr(team.teamWRs, list, i);
+                if (playerListClosestOvr3 != null) {
+                    team.removePlayer(playerListClosestOvr3);
+                    team2.addPlayer(playerListClosestOvr3);
+                    return playerListClosestOvr3;
+                }
+                ++j;
+                n = n4;
+            }
+            else if (calculateAvgTalentPosition4 == array[j]) {
+                int n5;
+                if ((n5 = n) != 0) {
+                    o = team.teamOLs;
+                    n5 = 0;
+                }
+                final Player playerListClosestOvr4 = findPlayerListClosestOvr(team.teamOLs, list, i);
+                if (playerListClosestOvr4 != null) {
+                    team.removePlayer(playerListClosestOvr4);
+                    team2.addPlayer(playerListClosestOvr4);
+                    return playerListClosestOvr4;
+                }
+                ++j;
+                n = n5;
+            }
+            else if (calculateAvgTalentPosition5 == array[j]) {
+                int n6;
+                if ((n6 = n) != 0) {
+                    o = team.teamKs;
+                    n6 = 0;
+                }
+                final Player playerListClosestOvr5 = findPlayerListClosestOvr(team.teamKs, list, i);
+                if (playerListClosestOvr5 != null) {
+                    team.removePlayer(playerListClosestOvr5);
+                    team2.addPlayer(playerListClosestOvr5);
+                    return playerListClosestOvr5;
+                }
+                ++j;
+                n = n6;
+            }
+            else if (calculateAvgTalentPosition6 == array[j]) {
+                int n7;
+                if ((n7 = n) != 0) {
+                    o = team.teamSs;
+                    n7 = 0;
+                }
+                final Player playerListClosestOvr6 = findPlayerListClosestOvr(team.teamSs, list, i);
+                if (playerListClosestOvr6 != null) {
+                    team.removePlayer(playerListClosestOvr6);
+                    team2.addPlayer(playerListClosestOvr6);
+                    return playerListClosestOvr6;
+                }
+                ++j;
+                n = n7;
+            }
+            else if (calculateAvgTalentPosition7 == array[j]) {
+                int n8;
+                if ((n8 = n) != 0) {
+                    o = team.teamCBs;
+                    n8 = 0;
+                }
+                final Player playerListClosestOvr7 = findPlayerListClosestOvr(team.teamCBs, list, i);
+                if (playerListClosestOvr7 != null) {
+                    team.removePlayer(playerListClosestOvr7);
+                    team2.addPlayer(playerListClosestOvr7);
+                    return playerListClosestOvr7;
+                }
+                ++j;
+                n = n8;
+            }
+            else if (calculateAvgTalentPosition8 == array[j]) {
+                int n9;
+                if ((n9 = n) != 0) {
+                    o = team.teamDLs;
+                    n9 = 0;
+                }
+                final Player playerListClosestOvr8 = findPlayerListClosestOvr(team.teamDLs, list, i);
+                if (playerListClosestOvr8 != null) {
+                    team.removePlayer(playerListClosestOvr8);
+                    team2.addPlayer(playerListClosestOvr8);
+                    return playerListClosestOvr8;
+                }
+                ++j;
+                n = n9;
+            }
+            else {
+                int n10;
+                if ((n10 = n) != 0) {
+                    o = team.teamLBs;
+                    n10 = 0;
+                }
+                final Player playerListClosestOvr9 = findPlayerListClosestOvr(team.teamLBs, list, i);
+                if (playerListClosestOvr9 != null) {
+                    team.removePlayer(playerListClosestOvr9);
+                    team2.addPlayer(playerListClosestOvr9);
+                    return playerListClosestOvr9;
+                }
+                ++j;
+                n = n10;
+            }
+        }
+        Player player;
+        for (i = 0; i < ((ArrayList)o).size(); ++i) {
+            player = ((ArrayList<Player>)o).get(i);
+            if (!list.contains(player)) {
+                team.removePlayer(player);
+                team2.addPlayer(player);
+                return player;
+            }
+        }
+        return null;
     }
-    paramArrayList = ((ArrayList)localObject2).iterator();
-    while (paramArrayList.hasNext())
-    {
-      localObject1 = (Player)paramArrayList.next();
-      paramTeam1.addPlayer((Player)localObject1);
-      paramTeam2.removePlayer((Player)localObject1);
+    
+    private static Player getGoodNonStarterList(final ArrayList<? extends Player> list, int i) {
+        while (i < list.size()) {
+            if (((Player)list.get(i)).getRatOvr() >= 80) {
+                return (Player)list.get(i);
+            }
+            ++i;
+        }
+        return null;
     }
-    paramTeam2.sortPlayers();
-    paramTeam1.sortPlayers();
-    return localTrade;
-  }
-  
-  private void transferDraftPick(DraftPick paramDraftPick, Team paramTeam1, Team paramTeam2)
-  {
-    draftPicks.remove(paramDraftPick);
-    draftPicks.add(paramDraftPick);
-    paramDraftPick.setTeamOwner(paramTeam2);
-  }
-  
-  private void transferTradePieces(ArrayList<TradePiece> paramArrayList, Team paramTeam1, Team paramTeam2)
-  {
-    paramArrayList = paramArrayList.iterator();
-    while (paramArrayList.hasNext())
-    {
-      Object localObject = (TradePiece)paramArrayList.next();
-      if ((localObject instanceof Player))
-      {
-        localObject = (Player)localObject;
-        paramTeam1.removePlayer((Player)localObject);
-        paramTeam2.addPlayer((Player)localObject);
-        ((Player)localObject).setTeam(paramTeam2);
-        ((Player)localObject).addTeamPlayedFor(abbr, league.getYear());
-      }
-      else if ((localObject instanceof DraftPick))
-      {
-        transferDraftPick((DraftPick)localObject, paramTeam1, paramTeam2);
-      }
+    
+    public static int getTotalValue(final ArrayList<TradePiece> list) {
+        int n = 0;
+        final Iterator<TradePiece> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            n += iterator.next().getTradeValue();
+        }
+        return n;
     }
-    Collections.sort(draftPicks, new DraftPickComparatorYearRound());
-    Collections.sort(draftPicks, new DraftPickComparatorYearRound());
-  }
-  
-  public void addPieceToOffer(Team paramTeam, TradePiece paramTradePiece)
-  {
-    if (paramTeam == aTeam)
-    {
-      aOffer.add(paramTradePiece);
-      return;
+    
+    public static Trade getTradeOfferFromAI(final Team team, final Team team2, final ArrayList<TradePiece> list) {
+        final double n = team.wins / 25.0 + 1.2;
+        final Trade trade = new Trade(team, team2);
+        final ArrayList<Object> list2 = new ArrayList<Object>();
+        list2.addAll(list);
+        int n2 = 0;
+        double n3 = 0.0;
+        int n4 = 7;
+        int n5 = 0;
+        final ArrayList<DraftPick> list3 = new ArrayList<DraftPick>();
+        for (final TradePiece tradePiece : list2) {
+            if (tradePiece instanceof DraftPick) {
+                list3.add((DraftPick)tradePiece);
+                final int n6 = n2 + tradePiece.getTradeValue();
+                final int round = ((DraftPick)tradePiece).getRound();
+                final int n7 = n5 + (8 - round);
+                n2 = n6;
+                n5 = n7;
+                if (round >= n4) {
+                    continue;
+                }
+                n4 = round;
+                n2 = n6;
+                n5 = n7;
+            }
+            else {
+                if (team.getValueAdded((Player)tradePiece) > 0) {
+                    n2 += tradePiece.getTradeValue();
+                }
+                else {
+                    n2 += team.getValueAdded((Player)tradePiece);
+                }
+                n3 += ((Player)tradePiece).getContract().getMoneyPerYear();
+            }
+        }
+        final ArrayList<Player> list4 = new ArrayList<Player>();
+        int n8 = 0;
+        int n9 = 0;
+        for (final DraftPick draftPick : list2) {
+            if (draftPick instanceof Player) {
+                final Player player = (Player)draftPick;
+                team.addPlayer(player);
+                team2.removePlayer(player);
+                n8 += player.getRatOvr();
+                list4.add(player);
+                ++n9;
+            }
+        }
+        int n10;
+        if (n9 > 0) {
+            n10 = n8 / n9 + n5 / 2;
+        }
+        else {
+            n10 = 81 - (int)(1.5 * n4);
+        }
+        final ArrayList<Object> list5 = new ArrayList<Object>();
+        final ArrayList<Player> list6 = new ArrayList<Player>();
+        for (int n11 = 0; n11 < n9 && getTotalValue((ArrayList<TradePiece>)list5) * n < n2; ++n11) {
+            final Player playerDeepestPosition = findPlayerDeepestPosition(team2, team, list4, n10);
+            if (playerDeepestPosition != null) {
+                list5.add(playerDeepestPosition);
+                list6.add(playerDeepestPosition);
+            }
+        }
+        if (getTotalValue((ArrayList<TradePiece>)list5) * n < n2) {
+            int n12 = 0;
+            int n13 = 0;
+            final ArrayList<DraftPick> list7 = new ArrayList<DraftPick>();
+            while (getTotalValue((ArrayList<TradePiece>)list5) * n < n2) {
+                int n14;
+                if ((n12 == 0 || n12 == 1) && n13 < 6) {
+                    n14 = n13;
+                    if (team.draftPicks.size() > 0) {
+                        final DraftPick draftPickClosestValue = findDraftPickClosestValue(team.draftPicks, (int)(n2 - getTotalValue((ArrayList<TradePiece>)list5) * n), true, list7);
+                        if (draftPickClosestValue != null) {
+                            list7.add(draftPickClosestValue);
+                            list5.add(draftPickClosestValue);
+                        }
+                        n14 = n13 + 1;
+                    }
+                }
+                else {
+                    final Player playerDeepestPosition2 = findPlayerDeepestPosition(team2, team, list4, n10);
+                    n14 = n13;
+                    if (playerDeepestPosition2 != null) {
+                        list5.add(playerDeepestPosition2);
+                        list6.add(playerDeepestPosition2);
+                        n14 = n13;
+                    }
+                }
+                final int n15 = n12 + 1;
+                n13 = n14;
+                if ((n12 = n15) > 2) {
+                    n12 = 0;
+                    n13 = n14;
+                }
+            }
+        }
+        if (getTotalValue((ArrayList<TradePiece>)list5) * n > n2) {
+            int n16 = 0;
+            int n17 = 0;
+            while (getTotalValue((ArrayList<TradePiece>)list5) * n > getTotalValue((ArrayList<TradePiece>)list2)) {
+                int n18;
+                if ((n16 == 0 || n16 == 1) && n17 < 6) {
+                    n18 = n17;
+                    if (team2.draftPicks.size() > 0) {
+                        final DraftPick draftPickClosestValue2 = findDraftPickClosestValue(team2.draftPicks, (int)(getTotalValue((ArrayList<TradePiece>)list5) * n - getTotalValue((ArrayList<TradePiece>)list2)), false, list3);
+                        if (draftPickClosestValue2 != null) {
+                            list3.add(draftPickClosestValue2);
+                            list2.add(draftPickClosestValue2);
+                        }
+                        n18 = n17 + 1;
+                    }
+                }
+                else {
+                    final Player playerWeakestPosition = findPlayerWeakestPosition(team2, team, list6, n10);
+                    n18 = n17;
+                    if (playerWeakestPosition != null) {
+                        list2.add(playerWeakestPosition);
+                        list4.add(playerWeakestPosition);
+                        n18 = n17;
+                    }
+                }
+                final int n19 = n16 + 1;
+                n17 = n18;
+                if ((n16 = n19) > 2) {
+                    n16 = 0;
+                    n17 = n18;
+                }
+            }
+        }
+        Collections.sort(list5, (Comparator<? super Object>)new TradePieceComparator());
+        Collections.sort(list2, (Comparator<? super Object>)new TradePieceComparator());
+        trade.setOffer(team, (ArrayList<TradePiece>)list5);
+        trade.setOffer(team2, (ArrayList<TradePiece>)list2);
+        for (final Player player2 : list4) {
+            team.removePlayer(player2);
+            team2.addPlayer(player2);
+        }
+        for (final Player player3 : list6) {
+            team.addPlayer(player3);
+            team2.removePlayer(player3);
+        }
+        team2.sortPlayers();
+        team.sortPlayers();
+        return trade;
     }
-    bOffer.add(paramTradePiece);
-  }
-  
-  public void completeTrade()
-  {
-    transferTradePieces(aOffer, aTeam, bTeam);
-    transferTradePieces(bOffer, bTeam, aTeam);
-    aTeam.tradingBlock.clear();
-    bTeam.tradingBlock.clear();
-    aTeam.signUDFAs();
-    bTeam.signUDFAs();
-    aTeam.sortPlayers();
-    bTeam.sortPlayers();
-  }
-  
-  public ArrayList<TradePiece> getAOffer()
-  {
-    return aOffer;
-  }
-  
-  public Team getATeam()
-  {
-    return aTeam;
-  }
-  
-  public ArrayList<TradePiece> getBOffer()
-  {
-    return bOffer;
-  }
-  
-  public Team getBTeam()
-  {
-    return bTeam;
-  }
-  
-  public void setOffer(Team paramTeam, ArrayList<TradePiece> paramArrayList)
-  {
-    if (paramTeam == aTeam)
-    {
-      aOffer = paramArrayList;
-      return;
+    
+    public static Trade getTradeOfferFromUserTeam(final Team team, final Team team2, final ArrayList<TradePiece> list) {
+        final double n = team2.wins / 25.0 + 1.2;
+        final Trade trade = new Trade(team, team2);
+        final ArrayList<Object> list2 = new ArrayList<Object>();
+        list2.addAll(list);
+        int n2 = 0;
+        double n3 = 0.0;
+        int n4 = 7;
+        int n5 = 0;
+        for (final TradePiece tradePiece : list2) {
+            if (tradePiece instanceof DraftPick) {
+                final int n6 = n2 + tradePiece.getTradeValue();
+                final int round = ((DraftPick)tradePiece).getRound();
+                final int n7 = n5 + (8 - round);
+                n2 = n6;
+                n5 = n7;
+                if (round >= n4) {
+                    continue;
+                }
+                n4 = round;
+                n2 = n6;
+                n5 = n7;
+            }
+            else {
+                n2 += tradePiece.getTradeValue();
+                n3 += ((Player)tradePiece).getContract().getMoneyPerYear();
+            }
+        }
+        final ArrayList<Player> list3 = new ArrayList<Player>();
+        int n8 = 0;
+        int n9 = 0;
+        for (final TradePiece tradePiece2 : list2) {
+            if (tradePiece2 instanceof Player) {
+                final Player player = (Player)tradePiece2;
+                team2.removePlayer(player);
+                n8 += player.getRatOvr();
+                list3.add(player);
+                ++n9;
+            }
+        }
+        int n10;
+        if (n9 > 0) {
+            n10 = n8 / n9 + (int)(n5 / 1.5);
+        }
+        else {
+            n10 = 84 - (int)(1.5 * n4);
+        }
+        final ArrayList<Object> list4 = (ArrayList<Object>)new ArrayList<DraftPick>();
+        final ArrayList<DraftPick> list5 = new ArrayList<DraftPick>();
+        for (int n11 = 0; n11 < n9 && getTotalValue((ArrayList<TradePiece>)list4) < n2 * n; ++n11) {
+            final Player playerWeakestPosition = findPlayerWeakestPosition(team, team2, list3, n10);
+            if (playerWeakestPosition != null) {
+                list4.add(playerWeakestPosition);
+                list5.add((DraftPick)playerWeakestPosition);
+            }
+        }
+        int n12 = 0;
+        int n13 = 0;
+        final ArrayList<DraftPick> list6 = new ArrayList<DraftPick>();
+        while (getTotalValue((ArrayList<TradePiece>)list4) < n2 * n) {
+            int n14;
+            if ((n12 == 0 || n12 == 1) && n13 < 6) {
+                n14 = n13;
+                if (team2.draftPicks.size() > 0) {
+                    final DraftPick draftPickClosestValue = findDraftPickClosestValue(team.draftPicks, (int)(n2 * n - getTotalValue((ArrayList<TradePiece>)list4)), false, list6);
+                    if (draftPickClosestValue != null) {
+                        list6.add(draftPickClosestValue);
+                        list4.add(draftPickClosestValue);
+                    }
+                    n14 = n13 + 1;
+                }
+            }
+            else {
+                final Player playerWeakestPosition2 = findPlayerWeakestPosition(team, team2, list3, n10);
+                n14 = n13;
+                if (playerWeakestPosition2 != null) {
+                    list4.add(playerWeakestPosition2);
+                    list5.add((DraftPick)playerWeakestPosition2);
+                    n14 = n13;
+                }
+            }
+            final int n15 = n12 + 1;
+            n13 = n14;
+            if ((n12 = n15) > 2) {
+                n12 = 0;
+                n13 = n14;
+            }
+        }
+        Collections.sort(list4, (Comparator<? super Object>)new TradePieceComparator());
+        Collections.sort(list2, (Comparator<? super Object>)new TradePieceComparator());
+        trade.setOffer(team, (ArrayList<TradePiece>)list4);
+        trade.setOffer(team2, (ArrayList<TradePiece>)list2);
+        for (final Player player2 : list3) {
+            team2.addPlayer(player2);
+            team.removePlayer(player2);
+        }
+        for (final Player player3 : list5) {
+            team.addPlayer(player3);
+            team2.removePlayer(player3);
+        }
+        team2.sortPlayers();
+        team.sortPlayers();
+        return trade;
     }
-    bOffer = paramArrayList;
-  }
+    
+    private void transferDraftPick(final DraftPick draftPick, final Team team, final Team teamOwner) {
+        team.draftPicks.remove(draftPick);
+        teamOwner.draftPicks.add(draftPick);
+        draftPick.setTeamOwner(teamOwner);
+    }
+    
+    private void transferTradePieces(final ArrayList<TradePiece> list, final Team team, final Team team2) {
+        for (final TradePiece tradePiece : list) {
+            if (tradePiece instanceof Player) {
+                final Player player = (Player)tradePiece;
+                team.removePlayer(player);
+                team2.addPlayer(player);
+                player.setTeam(team2);
+                player.addTeamPlayedFor(team2.abbr, team2.league.getYear());
+            }
+            else {
+                if (!(tradePiece instanceof DraftPick)) {
+                    continue;
+                }
+                this.transferDraftPick((DraftPick)tradePiece, team, team2);
+            }
+        }
+        Collections.sort(team2.draftPicks, new DraftPickComparatorYearRound());
+        Collections.sort(team.draftPicks, new DraftPickComparatorYearRound());
+    }
+    
+    public void addPieceToOffer(final Team team, final TradePiece tradePiece) {
+        if (team == this.aTeam) {
+            this.aOffer.add(tradePiece);
+            return;
+        }
+        this.bOffer.add(tradePiece);
+    }
+    
+    public void completeTrade() {
+        this.transferTradePieces(this.aOffer, this.aTeam, this.bTeam);
+        this.transferTradePieces(this.bOffer, this.bTeam, this.aTeam);
+        this.aTeam.tradingBlock.clear();
+        this.bTeam.tradingBlock.clear();
+        this.aTeam.signUDFAs();
+        this.bTeam.signUDFAs();
+        this.aTeam.sortPlayers();
+        this.bTeam.sortPlayers();
+    }
+    
+    public ArrayList<TradePiece> getAOffer() {
+        return this.aOffer;
+    }
+    
+    public Team getATeam() {
+        return this.aTeam;
+    }
+    
+    public ArrayList<TradePiece> getBOffer() {
+        return this.bOffer;
+    }
+    
+    public Team getBTeam() {
+        return this.bTeam;
+    }
+    
+    public void setOffer(final Team team, final ArrayList<TradePiece> list) {
+        if (team == this.aTeam) {
+            this.aOffer = list;
+            return;
+        }
+        this.bOffer = list;
+    }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.Trade
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

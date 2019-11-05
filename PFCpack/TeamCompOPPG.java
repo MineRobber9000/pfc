@@ -1,24 +1,21 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
 import java.util.Comparator;
 
-class TeamCompOPPG
-  implements Comparator<Team>
+class TeamCompOPPG implements Comparator<Team>
 {
-  public int compare(Team paramTeam1, Team paramTeam2)
-  {
-    if (teamOppPoints / paramTeam1.numGames() < teamOppPoints / paramTeam2.numGames()) {
-      return -1;
+    @Override
+    public int compare(final Team team, final Team team2) {
+        if (team.teamOppPoints / team.numGames() < team2.teamOppPoints / team2.numGames()) {
+            return -1;
+        }
+        if (team.teamOppPoints / team.numGames() == team2.teamOppPoints / team2.numGames()) {
+            return 0;
+        }
+        return 1;
     }
-    if (teamOppPoints / paramTeam1.numGames() == teamOppPoints / paramTeam2.numGames()) {
-      return 0;
-    }
-    return 1;
-  }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.TeamCompOPPG
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

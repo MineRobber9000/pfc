@@ -1,133 +1,110 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
 public class Contract
 {
-  public static final double[] MAX_CONTRACTS = { 22.0D, 12.0D, 10.0D, 8.0D, 5.0D, 10.0D, 8.0D, 8.0D, 8.0D };
-  public static final int MAX_CONTRACT_OVR = 90;
-  public static final double SALARY_CAP = 150.0D;
-  private double moneyPerYear;
-  private Player player;
-  private int yearsLeft;
-  
-  public Contract(Player paramPlayer)
-  {
-    yearsLeft = ((int)(Math.random() * 5.0D + 1.0D));
-    moneyPerYear = ((ratOvr - 50) / 10);
-  }
-  
-  public Contract(Player paramPlayer, int paramInt, double paramDouble)
-  {
-    player = paramPlayer;
-    yearsLeft = paramInt;
-    moneyPerYear = paramDouble;
-  }
-  
-  public static Contract getContractDraft(Player paramPlayer, int paramInt)
-  {
-    int j = (224 - paramInt) / 64 + 1;
-    int i = j;
-    if (j < 2) {
-      i = 2;
+    public static final double[] MAX_CONTRACTS;
+    public static final int MAX_CONTRACT_OVR = 90;
+    public static final double SALARY_CAP = 150.0;
+    private double moneyPerYear;
+    private Player player;
+    private int yearsLeft;
+    
+    static {
+        MAX_CONTRACTS = new double[] { 22.0, 12.0, 10.0, 8.0, 5.0, 10.0, 8.0, 8.0, 8.0 };
     }
-    double d2 = (int)(10.0D * (5.6D - Math.pow(1.0D + paramInt / 125.0D, 3.25D))) / 10.0D;
-    double d1 = d2;
-    if (d2 < 0.5D) {
-      d1 = 0.5D;
+    
+    public Contract(final Player player) {
+        this.yearsLeft = (int)(Math.random() * 5.0 + 1.0);
+        this.moneyPerYear = (player.ratOvr - 50) / 10;
     }
-    return new Contract(paramPlayer, i, d1);
-  }
-  
-  public static Contract getContractFA(Player paramPlayer)
-  {
-    int j = (ratOvr - 40) / 10;
-    int i = j;
-    if (j < 2) {
-      i = 2;
+    
+    public Contract(final Player player, final int yearsLeft, final double moneyPerYear) {
+        this.player = player;
+        this.yearsLeft = yearsLeft;
+        this.moneyPerYear = moneyPerYear;
     }
-    j = i;
-    if (i > 5) {
-      j = 5;
-    }
-    double d1 = MAX_CONTRACTS[Player.getPosNumber(position)];
-    i = ratOvr * (220 - age) / 200;
-    if (i >= 90) {}
-    for (;;)
-    {
-      return new Contract(paramPlayer, j, d1);
-      double d2;
-      if (i >= 80)
-      {
-        d2 = d1 - Math.pow(0.2857142857142857D, 0.65D) * d1;
-        d2 = (int)(10.0D * (d2 + (d1 - d2) * Math.pow((i - 80) / 10.0D, 0.65D))) / 10.0D;
-        d1 = d2;
-        if (d2 < 0.5D) {
-          d1 = 0.5D;
+    
+    public static Contract getContractDraft(final Player player, final int n) {
+        int n2;
+        if ((n2 = (224 - n) / 64 + 1) < 2) {
+            n2 = 2;
         }
-      }
-      else
-      {
-        d2 = (int)(10.0D * (d1 - Math.pow((90 - i) / 35.0D, 0.65D) * d1)) / 10.0D;
-        d1 = d2;
-        if (d2 < 0.5D) {
-          d1 = 0.5D;
+        double n3;
+        if ((n3 = (int)(10.0 * (5.6 - Math.pow(1.0 + n / 125.0, 3.25))) / 10.0) < 0.5) {
+            n3 = 0.5;
         }
-      }
+        return new Contract(player, n2, n3);
     }
-  }
-  
-  public boolean advanceSeason()
-  {
-    yearsLeft -= 1;
-    return yearsLeft <= 0;
-  }
-  
-  public void decreaseMoneyAndYears()
-  {
-    moneyPerYear -= 1.0D;
-    moneyPerYear = ((int)(moneyPerYear * 10.0D) / 10.0D);
-    yearsLeft -= 1;
-    if (moneyPerYear < 0.5D) {
-      moneyPerYear = 0.5D;
+    
+    public static Contract getContractFA(final Player player) {
+        int n;
+        if ((n = (player.ratOvr - 40) / 10) < 2) {
+            n = 2;
+        }
+        int n2;
+        if ((n2 = n) > 5) {
+            n2 = 5;
+        }
+        double n3 = Contract.MAX_CONTRACTS[Player.getPosNumber(player.position)];
+        final int n4 = player.ratOvr * (220 - player.age) / 200;
+        if (n4 < 90) {
+            if (n4 >= 80) {
+                final double n5 = n3 - Math.pow(0.2857142857142857, 0.65) * n3;
+                if ((n3 = (int)(10.0 * (n5 + (n3 - n5) * Math.pow((n4 - 80) / 10.0, 0.65))) / 10.0) < 0.5) {
+                    n3 = 0.5;
+                }
+            }
+            else if ((n3 = (int)(10.0 * (n3 - Math.pow((90 - n4) / 35.0, 0.65) * n3)) / 10.0) < 0.5) {
+                n3 = 0.5;
+            }
+        }
+        return new Contract(player, n2, n3);
     }
-    if (yearsLeft < 2) {
-      yearsLeft = 2;
+    
+    public boolean advanceSeason() {
+        --this.yearsLeft;
+        return this.yearsLeft <= 0;
     }
-  }
-  
-  public double getMoneyPerYear()
-  {
-    return moneyPerYear;
-  }
-  
-  public Player getPlayer()
-  {
-    return player;
-  }
-  
-  public int getYearsLeft()
-  {
-    return yearsLeft;
-  }
-  
-  public void setMoneyPerYear(double paramDouble)
-  {
-    moneyPerYear = paramDouble;
-    if ((int)(10.0D * paramDouble) / 10.0D < 0.5D) {}
-  }
-  
-  public void setYearsLeft(int paramInt)
-  {
-    yearsLeft = paramInt;
-  }
-  
-  public String toString()
-  {
-    return yearsLeft + "yrs, $" + moneyPerYear + "mil/yr";
-  }
+    
+    public void decreaseMoneyAndYears() {
+        --this.moneyPerYear;
+        this.moneyPerYear = (int)(this.moneyPerYear * 10.0) / 10.0;
+        --this.yearsLeft;
+        if (this.moneyPerYear < 0.5) {
+            this.moneyPerYear = 0.5;
+        }
+        if (this.yearsLeft < 2) {
+            this.yearsLeft = 2;
+        }
+    }
+    
+    public double getMoneyPerYear() {
+        return this.moneyPerYear;
+    }
+    
+    public Player getPlayer() {
+        return this.player;
+    }
+    
+    public int getYearsLeft() {
+        return this.yearsLeft;
+    }
+    
+    public void setMoneyPerYear(final double moneyPerYear) {
+        this.moneyPerYear = moneyPerYear;
+        if ((int)(10.0 * moneyPerYear) / 10.0 < 0.5) {}
+    }
+    
+    public void setYearsLeft(final int yearsLeft) {
+        this.yearsLeft = yearsLeft;
+    }
+    
+    @Override
+    public String toString() {
+        return this.yearsLeft + "yrs, $" + this.moneyPerYear + "mil/yr";
+    }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.Contract
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

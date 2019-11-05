@@ -1,42 +1,37 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package com.achijones.profootballcoach;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Button;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.View;
+import android.content.Context;
+import android.widget.ArrayAdapter;
 
-public class SaveFilesListArrayAdapter
-  extends ArrayAdapter<String>
+public class SaveFilesListArrayAdapter extends ArrayAdapter<String>
 {
-  private final Context context;
-  private final String[] values;
-  
-  public SaveFilesListArrayAdapter(Context paramContext, String[] paramArrayOfString)
-  {
-    super(paramContext, 2130968609, paramArrayOfString);
-    context = paramContext;
-    values = paramArrayOfString;
-  }
-  
-  public View getView(int paramInt, View paramView, ViewGroup paramViewGroup)
-  {
-    paramView = ((LayoutInflater)context.getSystemService("layout_inflater")).inflate(2130968609, paramViewGroup, false);
-    ((Button)paramView.findViewById(2131558555)).setVisibility(8);
-    ((Button)paramView.findViewById(2131558556)).setVisibility(8);
-    paramViewGroup = values[paramInt].split(">");
-    TextView localTextView = (TextView)paramView.findViewById(2131558552);
-    localTextView.setPadding(5, 0, 5, 0);
-    localTextView.setText(paramViewGroup[0]);
-    localTextView.setClickable(false);
-    return paramView;
-  }
+    private final Context context;
+    private final String[] values;
+    
+    public SaveFilesListArrayAdapter(final Context context, final String[] values) {
+        super(context, 2130968609, (Object[])values);
+        this.context = context;
+        this.values = values;
+    }
+    
+    public View getView(final int n, View inflate, final ViewGroup viewGroup) {
+        inflate = ((LayoutInflater)this.context.getSystemService("layout_inflater")).inflate(2130968609, viewGroup, false);
+        ((Button)inflate.findViewById(2131558555)).setVisibility(8);
+        ((Button)inflate.findViewById(2131558556)).setVisibility(8);
+        final String[] split = this.values[n].split(">");
+        final TextView textView = (TextView)inflate.findViewById(2131558552);
+        textView.setPadding(5, 0, 5, 0);
+        textView.setText((CharSequence)split[0]);
+        textView.setClickable(false);
+        return inflate;
+    }
 }
-
-/* Location:
- * Qualified Name:     com.achijones.profootballcoach.SaveFilesListArrayAdapter
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

@@ -1,174 +1,146 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
+import java.util.ArrayList;
 
 public class Division
 {
-  public ArrayList<Player> allDivPlayers;
-  public String divName;
-  public ArrayList<Team> divTeams;
-  public boolean evenYear;
-  public League league;
-  public int robinWeek;
-  public int week;
-  
-  public Division(String paramString, League paramLeague)
-  {
-    divName = paramString;
-    divTeams = new ArrayList();
-    league = paramLeague;
-    week = 0;
-    robinWeek = 0;
-    allDivPlayers = new ArrayList();
-  }
-  
-  public void generateTeams()
-  {
-    if (divName.equals("AMNOR"))
-    {
-      divTeams.add(new Team("CIN Tigers", "CIN", divName, league));
-      divTeams.add(new Team("BAL Blackbirds", "BAL", divName, league));
-      divTeams.add(new Team("PIT Irondogs", "PIT", divName, league));
-      divTeams.add(new Team("CLE Mud", "CLE", divName, league));
+    public ArrayList<Player> allDivPlayers;
+    public String divName;
+    public ArrayList<Team> divTeams;
+    public boolean evenYear;
+    public League league;
+    public int robinWeek;
+    public int week;
+    
+    public Division(final String divName, final League league) {
+        this.divName = divName;
+        this.divTeams = new ArrayList<Team>();
+        this.league = league;
+        this.week = 0;
+        this.robinWeek = 0;
+        this.allDivPlayers = new ArrayList<Player>();
     }
-    do
-    {
-      return;
-      if (divName.equals("AMEAS"))
-      {
-        divTeams.add(new Team("NYJ Juice", "NYJ", divName, league));
-        divTeams.add(new Team("BUF Bison", "BUF", divName, league));
-        divTeams.add(new Team("NE Redcoats", "NE", divName, league));
-        divTeams.add(new Team("MIA Pitbulls", "MIA", divName, league));
-        return;
-      }
-      if (divName.equals("AMSOU"))
-      {
-        divTeams.add(new Team("TEN Monsters", "TEN", divName, league));
-        divTeams.add(new Team("JAX Cheetahs", "JAX", divName, league));
-        divTeams.add(new Team("HOU Herders", "HOU", divName, league));
-        divTeams.add(new Team("IND Ponies", "IND", divName, league));
-        return;
-      }
-      if (divName.equals("AMWES"))
-      {
-        divTeams.add(new Team("DEN Stallions", "DEN", divName, league));
-        divTeams.add(new Team("KC Cherokee", "KC", divName, league));
-        divTeams.add(new Team("SD Lightning", "SD", divName, league));
-        divTeams.add(new Team("OAK Pillagers", "OAK", divName, league));
-        return;
-      }
-      if (divName.equals("NANOR"))
-      {
-        divTeams.add(new Team("GB Boxers", "GB", divName, league));
-        divTeams.add(new Team("DET Mustangs", "DET", divName, league));
-        divTeams.add(new Team("MIN Voyagers", "MIN", divName, league));
-        divTeams.add(new Team("CHI Wind", "CHI", divName, league));
-        return;
-      }
-      if (divName.equals("NAEAS"))
-      {
-        divTeams.add(new Team("DAL Ranchers", "DAL", divName, league));
-        divTeams.add(new Team("WAS Senators", "WAS", divName, league));
-        divTeams.add(new Team("PHI Liberty", "PHI", divName, league));
-        divTeams.add(new Team("NYG Goliaths", "NYG", divName, league));
-        return;
-      }
-      if (divName.equals("NASOU"))
-      {
-        divTeams.add(new Team("ATL Birds", "ATL", divName, league));
-        divTeams.add(new Team("CAR Cougars", "CAR", divName, league));
-        divTeams.add(new Team("TB Pirates", "TB", divName, league));
-        divTeams.add(new Team("NO Jazz", "NO", divName, league));
-        return;
-      }
-    } while (!divName.equals("NAWES"));
-    divTeams.add(new Team("ARI Phoenixes", "ARI", divName, league));
-    divTeams.add(new Team("SAN Miners", "SAN", divName, league));
-    divTeams.add(new Team("SEA Baristas", "SEA", divName, league));
-    divTeams.add(new Team("LA Stars", "LA", divName, league));
-  }
-  
-  public ArrayList<Player> getAllDivPlayers()
-  {
-    if (allDivPlayers.isEmpty())
-    {
-      ArrayList localArrayList1 = new ArrayList();
-      ArrayList localArrayList2 = new ArrayList();
-      ArrayList localArrayList3 = new ArrayList();
-      ArrayList localArrayList4 = new ArrayList();
-      ArrayList localArrayList5 = new ArrayList();
-      ArrayList localArrayList6 = new ArrayList();
-      ArrayList localArrayList7 = new ArrayList();
-      ArrayList localArrayList8 = new ArrayList();
-      ArrayList localArrayList9 = new ArrayList();
-      Iterator localIterator = divTeams.iterator();
-      while (localIterator.hasNext())
-      {
-        Team localTeam = (Team)localIterator.next();
-        localArrayList1.addAll(teamQBs);
-        localArrayList2.addAll(teamRBs);
-        localArrayList3.addAll(teamWRs);
-        localArrayList4.addAll(teamOLs);
-        localArrayList5.addAll(teamKs);
-        localArrayList6.addAll(teamSs);
-        localArrayList7.addAll(teamCBs);
-        localArrayList8.addAll(teamDLs);
-        localArrayList9.addAll(teamLBs);
-      }
-      Collections.sort(localArrayList1, new PlayerMVPComp());
-      Collections.sort(localArrayList2, new PlayerMVPComp());
-      Collections.sort(localArrayList3, new PlayerMVPComp());
-      Collections.sort(localArrayList4, new PlayerMVPComp());
-      Collections.sort(localArrayList5, new PlayerMVPComp());
-      Collections.sort(localArrayList6, new PlayerMVPComp());
-      Collections.sort(localArrayList7, new PlayerMVPComp());
-      Collections.sort(localArrayList8, new PlayerMVPComp());
-      Collections.sort(localArrayList9, new PlayerMVPComp());
-      allDivPlayers.add(localArrayList1.get(0));
-      allDivPlayers.add(localArrayList2.get(0));
-      allDivPlayers.add(localArrayList2.get(1));
-      int i = 0;
-      while (i < 3)
-      {
-        allDivPlayers.add(localArrayList3.get(i));
-        i += 1;
-      }
-      i = 0;
-      while (i < 5)
-      {
-        allDivPlayers.add(localArrayList4.get(i));
-        i += 1;
-      }
-      allDivPlayers.add(localArrayList5.get(0));
-      allDivPlayers.add(localArrayList6.get(0));
-      i = 0;
-      while (i < 3)
-      {
-        allDivPlayers.add(localArrayList7.get(i));
-        i += 1;
-      }
-      i = 0;
-      while (i < 4)
-      {
-        allDivPlayers.add(localArrayList8.get(i));
-        i += 1;
-      }
-      i = 0;
-      while (i < 3)
-      {
-        allDivPlayers.add(localArrayList9.get(i));
-        i += 1;
-      }
+    
+    public void generateTeams() {
+        if (this.divName.equals("AMNOR")) {
+            this.divTeams.add(new Team("CIN Tigers", "CIN", this.divName, this.league));
+            this.divTeams.add(new Team("BAL Blackbirds", "BAL", this.divName, this.league));
+            this.divTeams.add(new Team("PIT Irondogs", "PIT", this.divName, this.league));
+            this.divTeams.add(new Team("CLE Mud", "CLE", this.divName, this.league));
+        }
+        else {
+            if (this.divName.equals("AMEAS")) {
+                this.divTeams.add(new Team("NYJ Juice", "NYJ", this.divName, this.league));
+                this.divTeams.add(new Team("BUF Bison", "BUF", this.divName, this.league));
+                this.divTeams.add(new Team("NE Redcoats", "NE", this.divName, this.league));
+                this.divTeams.add(new Team("MIA Pitbulls", "MIA", this.divName, this.league));
+                return;
+            }
+            if (this.divName.equals("AMSOU")) {
+                this.divTeams.add(new Team("TEN Monsters", "TEN", this.divName, this.league));
+                this.divTeams.add(new Team("JAX Cheetahs", "JAX", this.divName, this.league));
+                this.divTeams.add(new Team("HOU Herders", "HOU", this.divName, this.league));
+                this.divTeams.add(new Team("IND Ponies", "IND", this.divName, this.league));
+                return;
+            }
+            if (this.divName.equals("AMWES")) {
+                this.divTeams.add(new Team("DEN Stallions", "DEN", this.divName, this.league));
+                this.divTeams.add(new Team("KC Cherokee", "KC", this.divName, this.league));
+                this.divTeams.add(new Team("SD Lightning", "SD", this.divName, this.league));
+                this.divTeams.add(new Team("OAK Pillagers", "OAK", this.divName, this.league));
+                return;
+            }
+            if (this.divName.equals("NANOR")) {
+                this.divTeams.add(new Team("GB Boxers", "GB", this.divName, this.league));
+                this.divTeams.add(new Team("DET Mustangs", "DET", this.divName, this.league));
+                this.divTeams.add(new Team("MIN Voyagers", "MIN", this.divName, this.league));
+                this.divTeams.add(new Team("CHI Wind", "CHI", this.divName, this.league));
+                return;
+            }
+            if (this.divName.equals("NAEAS")) {
+                this.divTeams.add(new Team("DAL Ranchers", "DAL", this.divName, this.league));
+                this.divTeams.add(new Team("WAS Senators", "WAS", this.divName, this.league));
+                this.divTeams.add(new Team("PHI Liberty", "PHI", this.divName, this.league));
+                this.divTeams.add(new Team("NYG Goliaths", "NYG", this.divName, this.league));
+                return;
+            }
+            if (this.divName.equals("NASOU")) {
+                this.divTeams.add(new Team("ATL Birds", "ATL", this.divName, this.league));
+                this.divTeams.add(new Team("CAR Cougars", "CAR", this.divName, this.league));
+                this.divTeams.add(new Team("TB Pirates", "TB", this.divName, this.league));
+                this.divTeams.add(new Team("NO Jazz", "NO", this.divName, this.league));
+                return;
+            }
+            if (this.divName.equals("NAWES")) {
+                this.divTeams.add(new Team("ARI Phoenixes", "ARI", this.divName, this.league));
+                this.divTeams.add(new Team("SAN Miners", "SAN", this.divName, this.league));
+                this.divTeams.add(new Team("SEA Baristas", "SEA", this.divName, this.league));
+                this.divTeams.add(new Team("LA Stars", "LA", this.divName, this.league));
+            }
+        }
     }
-    return allDivPlayers;
-  }
+    
+    public ArrayList<Player> getAllDivPlayers() {
+        if (this.allDivPlayers.isEmpty()) {
+            final ArrayList<Player> list = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list2 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list3 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list4 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list5 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list6 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list7 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list8 = (ArrayList<Player>)new ArrayList<Object>();
+            final ArrayList<Player> list9 = (ArrayList<Player>)new ArrayList<Object>();
+            for (final Team team : this.divTeams) {
+                list.addAll((Collection<?>)team.teamQBs);
+                list2.addAll((Collection<?>)team.teamRBs);
+                list3.addAll((Collection<?>)team.teamWRs);
+                list4.addAll((Collection<?>)team.teamOLs);
+                list5.addAll((Collection<?>)team.teamKs);
+                list6.addAll((Collection<?>)team.teamSs);
+                list7.addAll((Collection<?>)team.teamCBs);
+                list8.addAll((Collection<?>)team.teamDLs);
+                list9.addAll((Collection<?>)team.teamLBs);
+            }
+            Collections.sort((List<Object>)list, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list2, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list3, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list4, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list5, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list6, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list7, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list8, (Comparator<? super Object>)new PlayerMVPComp());
+            Collections.sort((List<Object>)list9, (Comparator<? super Object>)new PlayerMVPComp());
+            this.allDivPlayers.add(list.get(0));
+            this.allDivPlayers.add(list2.get(0));
+            this.allDivPlayers.add(list2.get(1));
+            for (int i = 0; i < 3; ++i) {
+                this.allDivPlayers.add(list3.get(i));
+            }
+            for (int j = 0; j < 5; ++j) {
+                this.allDivPlayers.add(list4.get(j));
+            }
+            this.allDivPlayers.add(list5.get(0));
+            this.allDivPlayers.add(list6.get(0));
+            for (int k = 0; k < 3; ++k) {
+                this.allDivPlayers.add(list7.get(k));
+            }
+            for (int l = 0; l < 4; ++l) {
+                this.allDivPlayers.add(list8.get(l));
+            }
+            for (int n = 0; n < 3; ++n) {
+                this.allDivPlayers.add(list9.get(n));
+            }
+        }
+        return this.allDivPlayers;
+    }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.Division
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

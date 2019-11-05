@@ -1,66 +1,55 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
 public class TeamStreak
 {
-  private int endYear;
-  private int startYear;
-  private int streakLength;
-  private String streakTeam;
-  
-  public TeamStreak(int paramInt1, int paramInt2, int paramInt3, String paramString)
-  {
-    startYear = paramInt1;
-    endYear = paramInt2;
-    streakLength = paramInt3;
-    streakTeam = paramString;
-  }
-  
-  public void addWin(int paramInt)
-  {
-    streakLength += 1;
-    endYear = paramInt;
-  }
-  
-  public void changeAbbr(String paramString)
-  {
-    streakTeam = paramString;
-  }
-  
-  public int getEndYear()
-  {
-    return endYear;
-  }
-  
-  public int getStartYear()
-  {
-    return startYear;
-  }
-  
-  public String getStreakCSV()
-  {
-    return streakLength + "," + streakTeam + "," + startYear + "," + endYear;
-  }
-  
-  public int getStreakLength()
-  {
-    return streakLength;
-  }
-  
-  public String getTeam()
-  {
-    return streakTeam;
-  }
-  
-  public void resetStreak(int paramInt)
-  {
-    startYear = paramInt;
-    endYear = paramInt;
-    streakLength = 0;
-  }
+    private int endYear;
+    private int startYear;
+    private int streakLength;
+    private String streakTeam;
+    
+    public TeamStreak(final int startYear, final int endYear, final int streakLength, final String streakTeam) {
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.streakLength = streakLength;
+        this.streakTeam = streakTeam;
+    }
+    
+    public void addWin(final int endYear) {
+        ++this.streakLength;
+        this.endYear = endYear;
+    }
+    
+    public void changeAbbr(final String streakTeam) {
+        this.streakTeam = streakTeam;
+    }
+    
+    public int getEndYear() {
+        return this.endYear;
+    }
+    
+    public int getStartYear() {
+        return this.startYear;
+    }
+    
+    public String getStreakCSV() {
+        return this.streakLength + "," + this.streakTeam + "," + this.startYear + "," + this.endYear;
+    }
+    
+    public int getStreakLength() {
+        return this.streakLength;
+    }
+    
+    public String getTeam() {
+        return this.streakTeam;
+    }
+    
+    public void resetStreak(final int n) {
+        this.startYear = n;
+        this.endYear = n;
+        this.streakLength = 0;
+    }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.TeamStreak
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */

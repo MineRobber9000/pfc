@@ -1,178 +1,170 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package PFCpack;
 
+import java.util.Collection;
 import java.util.ArrayList;
 
-public class PlayerRB
-  extends Player
+public class PlayerRB extends Player
 {
-  protected int careerFumbles;
-  protected int careerRushAtt;
-  protected int careerRushYards;
-  protected int careerTDs;
-  protected int ratRushEva;
-  protected int ratRushPow;
-  protected int ratRushSpd;
-  protected int statsFumbles;
-  protected int statsRushAtt;
-  protected int statsRushYards;
-  protected int statsTD;
-  
-  public PlayerRB(Team paramTeam, String[] paramArrayOfString)
-  {
-    super(paramTeam, paramArrayOfString);
-    statsRushAtt = 0;
-    statsRushYards = 0;
-    statsTD = 0;
-    statsFumbles = 0;
-    careerRushAtt = 0;
-    careerRushYards = 0;
-    careerTDs = 0;
-    careerFumbles = 0;
-  }
-  
-  public PlayerRB(String paramString, int paramInt)
-  {
-    super(paramString, "RB", paramInt);
-    statsRushAtt = 0;
-    statsRushYards = 0;
-    statsTD = 0;
-    statsFumbles = 0;
-    careerRushAtt = 0;
-    careerRushYards = 0;
-    careerTDs = 0;
-    careerFumbles = 0;
-  }
-  
-  public PlayerRB(String paramString, Team paramTeam)
-  {
-    super(paramString, paramTeam, "RB", true);
-    statsRushAtt = 0;
-    statsRushYards = 0;
-    statsTD = 0;
-    statsFumbles = 0;
-    careerRushAtt = 0;
-    careerRushYards = 0;
-    careerTDs = 0;
-    careerFumbles = 0;
-  }
-  
-  public PlayerRB(String paramString1, Team paramTeam, int[] paramArrayOfInt1, String paramString2, int[] paramArrayOfInt2)
-  {
-    super(paramString1, paramTeam, "RB", false);
-    setVariables(paramArrayOfInt1, paramString2);
-    statsRushAtt = paramArrayOfInt2[0];
-    statsRushYards = paramArrayOfInt2[1];
-    statsTD = paramArrayOfInt2[2];
-    statsFumbles = paramArrayOfInt2[3];
-    careerRushAtt = paramArrayOfInt2[4];
-    careerRushYards = paramArrayOfInt2[5];
-    careerTDs = paramArrayOfInt2[6];
-    careerFumbles = paramArrayOfInt2[7];
-  }
-  
-  public void advanceSeason()
-  {
-    super.advanceSeason();
-    careerRushAtt += statsRushAtt;
-    careerRushYards += statsRushYards;
-    careerTDs += statsTD;
-    careerFumbles += statsFumbles;
-    statsRushAtt = 0;
-    statsRushYards = 0;
-    statsTD = 0;
-    statsFumbles = 0;
-  }
-  
-  public String getCSV()
-  {
-    return super.getCSV() + ">" + statsRushAtt + "," + statsRushYards + "," + statsTD + "," + statsFumbles + "," + careerRushAtt + "," + careerRushYards + "," + careerTDs + "," + careerFumbles;
-  }
-  
-  public ArrayList<String> getCareerStatsList()
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("TDs: " + (statsTD + careerTDs) + ">Fumbles: " + (statsFumbles + careerFumbles));
-    localArrayList.add("Rush Yards: " + (statsRushYards + careerRushYards) + " yds>Yards/Att: " + (statsRushYards + careerRushYards) * 10 / (statsRushAtt + careerRushAtt + 1) / 10.0D + " yds");
-    localArrayList.add("Yds/Game: " + (statsRushYards + careerRushYards) / (getGamesPlayed() + careerGamesPlayed) + " yds/g>Rush Att: " + (statsRushAtt + careerRushAtt));
-    localArrayList.addAll(super.getCareerStatsList());
-    return localArrayList;
-  }
-  
-  public ArrayList<String> getDetailAllStatsList(int paramInt)
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("TDs: " + statsTD + ">Fumbles: " + statsFumbles);
-    localArrayList.add("Rush Yards: " + statsRushYards + " yds>Yards/Att: " + statsRushYards * 10 / (statsRushAtt + 1) / 10.0D + " yds");
-    localArrayList.add("Yds/Game: " + statsRushYards / getGamesPlayed() + " yds/g>Rush Att: " + statsRushAtt);
-    localArrayList.add("Games: " + gamesPlayed + " (" + statsWins + "-" + (gamesPlayed - statsWins) + ")>Durability: " + getLetterGrade(ratDur));
-    localArrayList.add("Football IQ: " + getLetterGrade(ratFootIQ) + ">Rush Power: " + getLetterGrade(ratRushPow));
-    localArrayList.add("Rush Speed: " + getLetterGrade(ratRushSpd) + ">Evasion: " + getLetterGrade(ratRushEva));
-    localArrayList.add("Contract: " + contract.toString());
-    localArrayList.add("[B]CAREER STATS:");
-    localArrayList.addAll(getCareerStatsList());
-    return localArrayList;
-  }
-  
-  public ArrayList<String> getDetailStatsList(int paramInt)
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("TDs: " + statsTD + ">Fumbles: " + statsFumbles);
-    localArrayList.add("Rush Yards: " + statsRushYards + " yds>Yards/Att: " + statsRushYards * 10 / (statsRushAtt + 1) / 10.0D + " yds");
-    localArrayList.add("Yds/Game: " + statsRushYards / getGamesPlayed() + " yds/g>Rush Att: " + statsRushAtt);
-    localArrayList.add("Games: " + gamesPlayed + " (" + statsWins + "-" + (gamesPlayed - statsWins) + ")>Durability: " + getLetterGrade(ratDur));
-    localArrayList.add("Football IQ: " + getLetterGrade(ratFootIQ) + ">Rush Power: " + getLetterGrade(ratRushPow));
-    localArrayList.add("Rush Speed: " + getLetterGrade(ratRushSpd) + ">Evasion: " + getLetterGrade(ratRushEva));
-    localArrayList.add("Contract: " + contract.toString());
-    localArrayList.add(" > ");
-    return localArrayList;
-  }
-  
-  public ArrayList<String> getDetailStatsOffseason()
-  {
-    ArrayList localArrayList = new ArrayList();
-    localArrayList.add("Potential: " + getLetterGrade(ratPot) + ">Durability: " + getLetterGrade(ratDur));
-    localArrayList.add("Football IQ: " + getLetterGrade(ratFootIQ) + ">Rush Power: " + getLetterGrade(ratRushPow));
-    localArrayList.add("Rush Speed: " + getLetterGrade(ratRushSpd) + ">Evasion: " + getLetterGrade(ratRushEva));
-    localArrayList.add("Desired Contract: " + Contract.getContractFA(this).toString());
-    localArrayList.add("[B]CAREER STATS:");
-    localArrayList.addAll(getCareerStatsList());
-    return localArrayList;
-  }
-  
-  public String getInfoForLineup()
-  {
-    if (injury != null) {
-      return getInitialName() + " [" + age + "] " + ratOvr + "/" + getLetterGrade(ratPot) + " " + injury.toString();
+    protected int careerFumbles;
+    protected int careerRushAtt;
+    protected int careerRushYards;
+    protected int careerTDs;
+    protected int ratRushEva;
+    protected int ratRushPow;
+    protected int ratRushSpd;
+    protected int statsFumbles;
+    protected int statsRushAtt;
+    protected int statsRushYards;
+    protected int statsTD;
+    
+    public PlayerRB(final Team team, final String[] array) {
+        super(team, array);
+        this.statsRushAtt = 0;
+        this.statsRushYards = 0;
+        this.statsTD = 0;
+        this.statsFumbles = 0;
+        this.careerRushAtt = 0;
+        this.careerRushYards = 0;
+        this.careerTDs = 0;
+        this.careerFumbles = 0;
     }
-    return getInitialName() + " [" + age + "] " + ratOvr + "/" + getLetterGrade(ratPot) + " (" + getLetterGrade(ratRushPow) + ", " + getLetterGrade(ratRushSpd) + ", " + getLetterGrade(ratRushEva) + ")";
-  }
-  
-  public int getMVPScore()
-  {
-    return statsTD * 100 - statsFumbles * 50 + (int)(statsRushYards * 2.4D);
-  }
-  
-  public int[] getRatings()
-  {
-    return new int[] { ratRushPow, ratRushSpd, ratRushEva };
-  }
-  
-  public void setOvr()
-  {
-    ratOvr = ((ratRushPow + ratRushSpd + ratRushEva) / 3);
-  }
-  
-  public void setRatings(int[] paramArrayOfInt)
-  {
-    ratRushPow = paramArrayOfInt[0];
-    ratRushSpd = paramArrayOfInt[1];
-    ratRushEva = paramArrayOfInt[2];
-    setOvr();
-  }
+    
+    public PlayerRB(final String s, final int n) {
+        super(s, "RB", n);
+        this.statsRushAtt = 0;
+        this.statsRushYards = 0;
+        this.statsTD = 0;
+        this.statsFumbles = 0;
+        this.careerRushAtt = 0;
+        this.careerRushYards = 0;
+        this.careerTDs = 0;
+        this.careerFumbles = 0;
+    }
+    
+    public PlayerRB(final String s, final Team team) {
+        super(s, team, "RB", true);
+        this.statsRushAtt = 0;
+        this.statsRushYards = 0;
+        this.statsTD = 0;
+        this.statsFumbles = 0;
+        this.careerRushAtt = 0;
+        this.careerRushYards = 0;
+        this.careerTDs = 0;
+        this.careerFumbles = 0;
+    }
+    
+    public PlayerRB(final String s, final Team team, final int[] array, final String s2, final int[] array2) {
+        super(s, team, "RB", false);
+        this.setVariables(array, s2);
+        this.statsRushAtt = array2[0];
+        this.statsRushYards = array2[1];
+        this.statsTD = array2[2];
+        this.statsFumbles = array2[3];
+        this.careerRushAtt = array2[4];
+        this.careerRushYards = array2[5];
+        this.careerTDs = array2[6];
+        this.careerFumbles = array2[7];
+    }
+    
+    @Override
+    public void advanceSeason() {
+        super.advanceSeason();
+        this.careerRushAtt += this.statsRushAtt;
+        this.careerRushYards += this.statsRushYards;
+        this.careerTDs += this.statsTD;
+        this.careerFumbles += this.statsFumbles;
+        this.statsRushAtt = 0;
+        this.statsRushYards = 0;
+        this.statsTD = 0;
+        this.statsFumbles = 0;
+    }
+    
+    @Override
+    public String getCSV() {
+        return super.getCSV() + ">" + this.statsRushAtt + "," + this.statsRushYards + "," + this.statsTD + "," + this.statsFumbles + "," + this.careerRushAtt + "," + this.careerRushYards + "," + this.careerTDs + "," + this.careerFumbles;
+    }
+    
+    @Override
+    public ArrayList<String> getCareerStatsList() {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("TDs: " + (this.statsTD + this.careerTDs) + ">Fumbles: " + (this.statsFumbles + this.careerFumbles));
+        list.add("Rush Yards: " + (this.statsRushYards + this.careerRushYards) + " yds>Yards/Att: " + (this.statsRushYards + this.careerRushYards) * 10 / (this.statsRushAtt + this.careerRushAtt + 1) / 10.0 + " yds");
+        list.add("Yds/Game: " + (this.statsRushYards + this.careerRushYards) / (this.getGamesPlayed() + this.careerGamesPlayed) + " yds/g>Rush Att: " + (this.statsRushAtt + this.careerRushAtt));
+        list.addAll(super.getCareerStatsList());
+        return list;
+    }
+    
+    @Override
+    public ArrayList<String> getDetailAllStatsList(final int n) {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("TDs: " + this.statsTD + ">Fumbles: " + this.statsFumbles);
+        list.add("Rush Yards: " + this.statsRushYards + " yds>Yards/Att: " + this.statsRushYards * 10 / (this.statsRushAtt + 1) / 10.0 + " yds");
+        list.add("Yds/Game: " + this.statsRushYards / this.getGamesPlayed() + " yds/g>Rush Att: " + this.statsRushAtt);
+        list.add("Games: " + this.gamesPlayed + " (" + this.statsWins + "-" + (this.gamesPlayed - this.statsWins) + ")>Durability: " + Player.getLetterGrade(this.ratDur));
+        list.add("Football IQ: " + Player.getLetterGrade(this.ratFootIQ) + ">Rush Power: " + Player.getLetterGrade(this.ratRushPow));
+        list.add("Rush Speed: " + Player.getLetterGrade(this.ratRushSpd) + ">Evasion: " + Player.getLetterGrade(this.ratRushEva));
+        list.add("Contract: " + this.contract.toString());
+        list.add("[B]CAREER STATS:");
+        list.addAll(this.getCareerStatsList());
+        return list;
+    }
+    
+    @Override
+    public ArrayList<String> getDetailStatsList(final int n) {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("TDs: " + this.statsTD + ">Fumbles: " + this.statsFumbles);
+        list.add("Rush Yards: " + this.statsRushYards + " yds>Yards/Att: " + this.statsRushYards * 10 / (this.statsRushAtt + 1) / 10.0 + " yds");
+        list.add("Yds/Game: " + this.statsRushYards / this.getGamesPlayed() + " yds/g>Rush Att: " + this.statsRushAtt);
+        list.add("Games: " + this.gamesPlayed + " (" + this.statsWins + "-" + (this.gamesPlayed - this.statsWins) + ")>Durability: " + Player.getLetterGrade(this.ratDur));
+        list.add("Football IQ: " + Player.getLetterGrade(this.ratFootIQ) + ">Rush Power: " + Player.getLetterGrade(this.ratRushPow));
+        list.add("Rush Speed: " + Player.getLetterGrade(this.ratRushSpd) + ">Evasion: " + Player.getLetterGrade(this.ratRushEva));
+        list.add("Contract: " + this.contract.toString());
+        list.add(" > ");
+        return list;
+    }
+    
+    @Override
+    public ArrayList<String> getDetailStatsOffseason() {
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("Potential: " + Player.getLetterGrade(this.ratPot) + ">Durability: " + Player.getLetterGrade(this.ratDur));
+        list.add("Football IQ: " + Player.getLetterGrade(this.ratFootIQ) + ">Rush Power: " + Player.getLetterGrade(this.ratRushPow));
+        list.add("Rush Speed: " + Player.getLetterGrade(this.ratRushSpd) + ">Evasion: " + Player.getLetterGrade(this.ratRushEva));
+        list.add("Desired Contract: " + Contract.getContractFA(this).toString());
+        list.add("[B]CAREER STATS:");
+        list.addAll(this.getCareerStatsList());
+        return list;
+    }
+    
+    @Override
+    public String getInfoForLineup() {
+        if (this.injury != null) {
+            return this.getInitialName() + " [" + this.age + "] " + this.ratOvr + "/" + Player.getLetterGrade(this.ratPot) + " " + this.injury.toString();
+        }
+        return this.getInitialName() + " [" + this.age + "] " + this.ratOvr + "/" + Player.getLetterGrade(this.ratPot) + " (" + Player.getLetterGrade(this.ratRushPow) + ", " + Player.getLetterGrade(this.ratRushSpd) + ", " + Player.getLetterGrade(this.ratRushEva) + ")";
+    }
+    
+    @Override
+    public int getMVPScore() {
+        return this.statsTD * 100 - this.statsFumbles * 50 + (int)(this.statsRushYards * 2.4);
+    }
+    
+    @Override
+    public int[] getRatings() {
+        return new int[] { this.ratRushPow, this.ratRushSpd, this.ratRushEva };
+    }
+    
+    public void setOvr() {
+        this.ratOvr = (this.ratRushPow + this.ratRushSpd + this.ratRushEva) / 3;
+    }
+    
+    public void setRatings(final int[] array) {
+        this.ratRushPow = array[0];
+        this.ratRushSpd = array[1];
+        this.ratRushEva = array[2];
+        this.setOvr();
+    }
 }
-
-/* Location:
- * Qualified Name:     PFCpack.PlayerRB
- * Java Class Version: 6 (50.0)
- * JD-Core Version:    0.7.1
- */
